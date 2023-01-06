@@ -15,12 +15,13 @@ return new class extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
-            $table->string('name');                                 //追記
-            $table->string('email')->unique();                      //追記
-            $table->timestamp('email_verified_at')->nullable();     //追記
-            $table->string('password');                             //追記
-            $table->rememberToken();                                //追記
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();                                
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
