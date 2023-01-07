@@ -20,7 +20,7 @@
                             <th style="width: 30%">タイトル</th>
                             <th style="width: 25%">作者</th>
                             <th style="width: 10%">レンタル状況</th>
-                            <th style="width: 10%">返却日</th>
+                            <th style="width: 10%">返却予定日</th>
                         </tr>
                         </thead>
                         <tbody>

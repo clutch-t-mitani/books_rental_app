@@ -19,7 +19,8 @@ class Book extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        // return $this->belongsToMany(User::class,'rental_statuses')->withPivot('rental_start_datetime');
+        return $this->belongsToMany(User::class,'rental_statuses')->withPivot('rental_start_datetime','return_datetime');
     }
 
     public function categories()

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('book_id')->comment('ブックID');
             $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
             $table->dateTime('rental_start_datetime')->comment('レンタル開始日');
-            $table->dateTime('scheduled_return_datetime')->comment('返却日')->nullable();
+            $table->dateTime('return_datetime')->comment('返却日')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
