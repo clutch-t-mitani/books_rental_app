@@ -20,7 +20,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/books/index', [bookController::class, 'index'])->name('books.index');
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/books/index', [bookController::class, 'index'])->name('books.index')->middleware();
+});
 
 Auth::routes();
 
