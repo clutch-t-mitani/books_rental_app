@@ -17,9 +17,8 @@ class Book extends Model
         'author',
     ];
 
-    public function users()
+    public function rental_statuses()
     {
-        // return $this->belongsToMany(User::class,'rental_statuses')->withPivot('rental_start_datetime');
         return $this->belongsToMany(User::class,'rental_statuses')->withPivot('rental_start_datetime','return_datetime');
     }
 

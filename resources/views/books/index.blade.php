@@ -27,14 +27,26 @@
                         @foreach ($books as $book)
                             <tr>
                                 <td>
-                                    @foreach ($books_categories[$book->id] as $category)
-                                        【{{ $category }}】<br>
+                                    @foreach ($book->categories as $category)
+                                        【{{ $category->name }}】<br>
                                     @endforeach
                                 </td>
                                 <td>{{ $book->name }}</td>
                                 <td>{{ $book->author }}</td>
-                                <td></td>
-                                <td></td>
+                                <td>
+                                    @foreach ($book->rental_statuses as $rental_status)
+                                        @if (empty($rental_status->pivot->return_datetime))
+                                             貸出中
+                                        @endif
+                                     @endforeach
+                                </td>
+                                <td>
+                                    @foreach ($book->rental_statuses as $rental_status)
+                                        @if (empty($rental_status->pivot->return_datetime))
+                                            {{ date('Y/n/j/(D)', strtotime($rental_status->pivot->rental_start_datetime.("+7 day"))) }}
+                                        @endif
+                                    @endforeach
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
