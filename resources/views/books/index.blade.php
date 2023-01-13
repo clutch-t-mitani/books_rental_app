@@ -1,17 +1,6 @@
 @extends('layouts.app_book')
 
 @section('content')
-@php
-$week = [
-  '日', //0
-  '月', //1
-  '火', //2
-  '水', //3
-  '木', //4
-  '金', //5
-  '土', //6
-];
-@endphp
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-17">
@@ -58,7 +47,7 @@ $week = [
                                 <td>
                                     @foreach ($book->rental_statuses as $rental_status)
                                         @if (empty($rental_status->pivot->return_datetime))
-                                            {{ date('Y/n/j/('.$week[date('w')].')' ,strtotime($rental_status->pivot->rental_start_datetime.("+7 day"))) }}
+                                            {{ date('Y/n/j/('.$day_of_week[date('w')].')' ,strtotime($rental_status->pivot->rental_start_datetime.("+7 day"))) }}
                                         @endif
                                     @endforeach
                                 </td>
@@ -70,7 +59,7 @@ $week = [
                                             <h4 class="modal-title" id="myModalLabel">【{{ $book->name }}】レンタルしますか？</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <label>返却予定日 ：{{ date('Y年m月d日('.$week[date('w')].')',strtotime("+7 day")) }}</label>
+                                            <label>返却予定日 ：{{ date('Y年m月d日('.$day_of_week[date('w')].')',strtotime("+7 day")) }}</label>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>

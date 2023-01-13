@@ -35,8 +35,8 @@
                                     @if (empty($book->pivot->return_datetime))
                                     <tr>
                                         <td>{{ $book->name }}</td>
-                                        <td>{{ date('Y/n/j/(D)',strtotime($book->pivot->rental_start_datetime)) }}</td>
-                                        <td>{{ date('Y/n/j/(D)', strtotime($book->pivot->rental_start_datetime.("+7 day"))) }}</td>
+                                        <td>{{ date('Y/n/j/('.$day_of_week[date('w')].')',strtotime($book->pivot->rental_start_datetime)) }}</td>
+                                        <td>{{ date('Y/n/j/('.$day_of_week[date('w')].')', strtotime($book->pivot->rental_start_datetime.("+7 day"))) }}</td>
                                     </tr>
                                     @endif
                                 @endforeach
@@ -57,8 +57,8 @@
                                     @if (!empty($book->pivot->return_datetime))
                                     <tr>
                                         <td>{{ $book->name }}</td>
-                                        <td>{{ date('Y/n/j/(D)',strtotime($book->pivot->rental_start_datetime)) }}</td>
-                                        <td>{{ date('Y/n/j/(D)', strtotime($book->pivot->rental_start_datetime.("+7 day"))) }}</td>
+                                        <td>{{ date('Y/n/j/('.$day_of_week[date('w')].')',strtotime($book->pivot->rental_start_datetime)) }}</td>
+                                        <td>{{ date('Y/n/j/('.$day_of_week[date('w')].')', strtotime($book->pivot->rental_start_datetime.("+7 day"))) }}</td>
                                     </tr>
                                     @endif
                                 @endforeach

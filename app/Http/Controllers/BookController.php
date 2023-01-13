@@ -11,6 +11,7 @@ class BookController extends Controller
     public function index()
     {
         $books = Book::get();
-        return view('books.index',compact('books'));
+        $day_of_week = ['日', '月', '火', '水', '木', '金', '土'];
+        return view('books.index',compact('books','day_of_week'));
     }
 }
