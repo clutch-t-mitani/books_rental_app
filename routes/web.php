@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\LoginController;
 use App\Http\Controllers\admin\RegisterController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +23,8 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => 'auth'], function() {
-    Route::get('/books/index', [bookController::class, 'index'])->name('books.index')->middleware();
+    Route::get('/books', [bookController::class, 'index'])->name('books.index');
+    Route::get('/user', [UserController::class, 'index'])->name('user.index');
 });
 
 Auth::routes();
