@@ -36,18 +36,36 @@
                                 <td>{{ $book->name }}</td>
                                 <td>{{ $book->author }}</td>
                                 <td>
-                                    <button type="button" data-sample="button2" class="btn btn-primary" data-toggle="modal" data-target="#rentalButtton{{ $book->id }}">借りる</button><br>
-
-                                    @foreach ($book->rental_statuses as $rental_status)
-                                        @if (empty($rental_status->pivot->return_datetime))
-                                             貸出中
-                                        @endif
-                                     @endforeach
+                                    {{--
+                                        countは配列の個数を調べる
+                                        $loop->last 1番
+                                     --}}
+                                    @if (count($book->rental_statuses))
+                                        @foreach ($book->rental_statuses as $rental_status)
+                                            @if ($loop->last)
+                                                @if (!empty($rental_status->return_datetime))
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rentalButtton{{ $book->id }}">
+                                                        借りる
+                                                    </button>
+                                                @else
+                                                    貸出中
+                                                @endif
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rentalButtton{{ $book->id }}">
+                                            借りる
+                                        </button>
+                                    @endif
                                 </td>
                                 <td>
                                     @foreach ($book->rental_statuses as $rental_status)
-                                        @if (empty($rental_status->pivot->return_datetime))
-                                            {{ date('Y/n/j/('.$day_of_week[date('w')].')' ,strtotime($rental_status->pivot->rental_start_datetime.("+7 day"))) }}
+                                        @if (empty($rental_status->return_datetime))
+                                            @php
+                                                $scheduled_return_day = date('Y/n/j' , strtotime($rental_status->rental_start_datetime.("+7 day")));
+                                                $day_no = date('w', strtotime($scheduled_return_day));
+                                            @endphp
+                                            {{ $scheduled_return_day.'(' .$day_of_week[$day_no].')' }}
                                         @endif
                                     @endforeach
                                 </td>

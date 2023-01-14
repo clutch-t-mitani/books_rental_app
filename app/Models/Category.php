@@ -15,8 +15,10 @@ class Category extends Model
         'name',
     ];
 
-    public function books()
+
+    //中間テーブルとつなぐ
+    public function book_categories()
     {
-        return $this->belongsToMany(Book::class);
+        return $this->hasMany('App\Models\BookCategory');
     }
 }

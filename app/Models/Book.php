@@ -17,14 +17,21 @@ class Book extends Model
         'author',
     ];
 
-    public function rental_statuses()
-    {
-        return $this->belongsToMany(User::class,'rental_statuses')->withPivot('rental_start_datetime','return_datetime');
-    }
-
     public function categories()
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsToMany('App\Models\Category');
+    }
+
+    //中間テーブルとつなぐ
+    public function rental_statuses()
+    {
+        return $this->hasMany('App\Models\RentalStatus');
+    }
+
+    //中間テーブルとつなぐ
+    public function book_categories()
+    {
+        return $this->hasMany('App\Models\BookCategory');
     }
 
 

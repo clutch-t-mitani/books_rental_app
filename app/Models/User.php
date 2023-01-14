@@ -43,16 +43,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // public function books()
-    // {
-    //     return $this->belongsToMany(Book::class,'rental_statuses');
 
-    // }
-
+    //中間テーブルとつなぐ
     public function rental_statuses()
     {
-        return $this->belongsToMany(Book::class,'rental_statuses')->withPivot('rental_start_datetime','return_datetime')->orderBy('rental_start_datetime', 'desc');
+        return $this->hasMany('App\Models\RentalStatus');
     }
-
 
 }
