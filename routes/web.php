@@ -24,7 +24,8 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/books', [bookController::class, 'index'])->name('books.index');
-    Route::get('/user', [UserController::class, 'index'])->name('user.index');
+    Route::post('/books', [bookController::class, 'store'])->name('books.store');
+    Route::get('/mypage', [UserController::class, 'index'])->name('user.mypage');
 });
 
 Auth::routes();

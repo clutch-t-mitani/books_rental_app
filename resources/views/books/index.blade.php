@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header" style="background-color: #000066; color: white; display: flex; justify-content: space-between;">
                     <div style="display: inline-block;">レンタル商品一覧</div>
-                    <div style="display: inline-block; "><a href="{{ url('/user') }}" class="user-link">現在のレンタル状況</a></div>
+                    <div style="display: inline-block; "><a href="{{ url('/mypage') }}" class="user-link">現在のレンタル状況</a></div>
                 </div>
                 <div class="card-body">
                     @if (session('status'))
@@ -73,15 +73,20 @@
                             <div class="modal fade" id="rentalButtton{{ $book->id }}" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title" id="myModalLabel">【{{ $book->name }}】レンタルしますか？</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <label>返却予定日 ：{{ date('Y年m月d日('.$day_of_week[date('w')].')',strtotime("+7 day")) }}</label>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-                                            <button type="button" class="btn btn-danger">削除</button>
+                                        <form action="{{ route('books.store') }}" method="post" name="myform">
+                                            @csrf
+                                            <input type="hidden" nama="id" value="{{ $book->id }}" >
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="myModalLabel">【{{ $book->name }}】レンタルしますか？</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <label>返却予定日 ：{{ date('Y年m月d日('.$day_of_week[date('w')].')',strtotime("+7 day")) }}</label>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+                                                <button type="submit" class="btn btn-primary" onclick="clickEvent()">レンタルする</button>
+                                                {{-- <input type="button" onclick="clickEvent()" value="送信" /> --}}
+                                        </form>
                                         </div>
                                     </div>
                                 </div>
@@ -96,6 +101,11 @@
 </div>
 
 <script type="text/javascript">
+    function clickEvent() {
+        console.log(document.myform);
+    //  document.myform.submit();
+
+}
 </script>
 <style>
 .user-link{
