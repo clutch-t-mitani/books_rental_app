@@ -75,7 +75,7 @@
                                     <div class="modal-content">
                                         <form action="{{ route('books.store') }}" method="post" name="myform">
                                             @csrf
-                                            <input type="hidden" nama="id" value="{{ $book->id }}" >
+                                            <input type="hidden" name="book_id" value="{{ $book->id }}" >
                                             <div class="modal-header">
                                                 <h4 class="modal-title" id="myModalLabel">【{{ $book->name }}】レンタルしますか？</h4>
                                             </div>
@@ -84,8 +84,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-                                                <button type="submit" class="btn btn-primary" onclick="clickEvent()">レンタルする</button>
-                                                {{-- <input type="button" onclick="clickEvent()" value="送信" /> --}}
+                                                <button type="submit" class="btn btn-primary">レンタルする</button>
                                         </form>
                                         </div>
                                     </div>
@@ -101,11 +100,6 @@
 </div>
 
 <script type="text/javascript">
-    function clickEvent() {
-        console.log(document.myform);
-    //  document.myform.submit();
-
-}
 </script>
 <style>
 .user-link{
