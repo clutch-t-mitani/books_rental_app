@@ -7,7 +7,9 @@
             <div class="card">
                 <div class="card-header" style="background-color: #000066; color: white; display: flex; justify-content: space-between;">
                     <div style="display: inline-block;">レンタル商品一覧</div>
-                    <div style="display: inline-block; "><a href="{{ url('/mypage') }}" class="user-link">現在のレンタル状況</a></div>
+                    @if( Auth::check() )
+                        <div style="display: inline-block; "><a href="{{ url('/mypage') }}" class="user-link">現在のレンタル状況</a></div>
+                    @endif
                 </div>
                 <div class="card-body">
                     @if (session('status'))
@@ -44,8 +46,9 @@
                                         @foreach ($book->rental_statuses as $rental_status)
                                             @if ($loop->last)
                                                 @if (!empty($rental_status->return_datetime))
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rentalButtton{{ $book->id }}">
-                                                        借りる
+                                                    <button type="button" class="btn btn-primary"
+                                                        @if( Auth::check() ) data-toggle="modal" data-target="#rentalButtton{{ $book->id }}"
+                                                        @else onclick="location.href = '{{ url('/login') }}'" @endif>借りる
                                                     </button>
                                                 @else
                                                     貸出中
@@ -53,8 +56,9 @@
                                             @endif
                                         @endforeach
                                     @else
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rentalButtton{{ $book->id }}">
-                                            借りる
+                                        <button type="button" class="btn btn-primary"
+                                            @if( Auth::check() ) data-toggle="modal" data-target="#rentalButtton{{ $book->id }}"
+                                            @else onclick="location.href = '{{ url('/login') }}'" @endif>借りる
                                         </button>
                                     @endif
                                 </td>

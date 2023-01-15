@@ -33,11 +33,11 @@ class BookController extends Controller
                 $rental_status->rental_start_datetime = now();
                 $rental_status->save();
                 DB::commit();
-                return redirect('/books')->with('flash_message', '登録しました');
+                return redirect('/')->with('flash_message', '登録しました');
             }
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect('/books')->with('flash_message', '登録に失敗しました');
+            return redirect('/')->with('flash_message', '登録に失敗しました');
         }
 
     }

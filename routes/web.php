@@ -18,12 +18,14 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', [bookController::class, 'index'])->name('books.index');
+
 
 Route::group(['middleware' => 'auth'], function() {
-    Route::get('/books', [bookController::class, 'index'])->name('books.index');
     Route::post('/books', [bookController::class, 'store'])->name('books.store');
     Route::get('/mypage', [UserController::class, 'index'])->name('user.mypage');
 });
