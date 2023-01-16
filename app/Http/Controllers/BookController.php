@@ -20,9 +20,10 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
-        DB::beginTransaction();
+        $book = Book::findOrFail($request->book_id);
+
         try {
-            $book = Book::findOrFail($request->book_id);
+            DB::beginTransaction();
             if ($book->is_rental) {
                 $book->is_rental = false;
                 $book->save();
@@ -32,13 +33,15 @@ class BookController extends Controller
                 $rental_status->book_id = $request->book_id;
                 $rental_status->rental_start_datetime = now();
                 $rental_status->save();
-                DB::commit();
-                return redirect('/')->with('flash_message', '登録しました');
             }
-        } catch (\Exception $e) {
-            DB::rollback();
-            return redirect('/')->with('flash_message', '登録に失敗しました');
+            DB::commit();
+            return redirect('/')->with('msg_success', 'レンタルしました');
+
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return redirect('/')->with('msg_danger', 'レンタルできませんでした');
         }
+
 
     }
 }

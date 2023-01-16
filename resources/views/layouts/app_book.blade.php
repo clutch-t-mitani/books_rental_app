@@ -17,6 +17,9 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 </head>
 <body>
@@ -92,5 +95,19 @@
             }
         });
     });
+
+    // {{--成功時--}}
+    @if (session('msg_success'))
+        $(function () {
+            toastr.success('{{ session('msg_success') }}');
+        });
+    @endif
+
+    // {{--失敗時--}}
+    @if (session('msg_danger'))
+        $(function () {
+            toastr.danger('{{ session('msg_danger') }}');
+        });
+    @endif
 </script>
 </html>

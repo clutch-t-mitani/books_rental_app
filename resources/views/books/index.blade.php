@@ -38,28 +38,13 @@
                                 <td>{{ $book->name }}</td>
                                 <td>{{ $book->author }}</td>
                                 <td>
-                                    {{--
-                                        countは配列の個数を調べる
-                                        $loop->last 1番
-                                     --}}
-                                    @if (count($book->rental_statuses))
-                                        @foreach ($book->rental_statuses as $rental_status)
-                                            @if ($loop->last)
-                                                @if (!empty($rental_status->return_datetime))
-                                                    <button type="button" class="btn btn-primary"
-                                                        @if( Auth::check() ) data-toggle="modal" data-target="#rentalButtton{{ $book->id }}"
-                                                        @else onclick="location.href = '{{ url('/login') }}'" @endif>借りる
-                                                    </button>
-                                                @else
-                                                    貸出中
-                                                @endif
-                                            @endif
-                                        @endforeach
-                                    @else
+                                    @if ($book->is_rental)
                                         <button type="button" class="btn btn-primary"
                                             @if( Auth::check() ) data-toggle="modal" data-target="#rentalButtton{{ $book->id }}"
                                             @else onclick="location.href = '{{ url('/login') }}'" @endif>借りる
                                         </button>
+                                    @else
+                                        貸出中
                                     @endif
                                 </td>
                                 <td>
