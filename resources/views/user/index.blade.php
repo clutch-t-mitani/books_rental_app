@@ -35,14 +35,8 @@
                                     @if (empty($rental_book->return_datetime))
                                     <tr>
                                         <td>{{ $rental_book->book->name }}</td>
-                                        @php
-                                            $rentarl_day = date('Y/n/j' , strtotime($rental_book->rental_start_datetime));
-                                            $rentarl_day_no = date('w', strtotime($rentarl_day));
-                                            $scheduled_return_day = date('Y/n/j' , strtotime(($rental_book->rental_start_datetime.("+7 day"))));
-                                            $scheduled_return_day_no = date('w', strtotime($rentarl_day));
-                                        @endphp
-                                        <td>{{ $rentarl_day.'(' .$day_of_week[$rentarl_day_no].')' }}</td>
-                                        <td>{{ $scheduled_return_day.'(' .$day_of_week[$scheduled_return_day_no].')' }}</td>
+                                        <td>{{ $rental_book->rental_start_datetime->isoFormat('YYYY/MM/DD(ddd)') }}</td>
+                                        <td>{{ $rental_book->rental_start_datetime->addDays(7)->isoFormat('YYYY/MM/DD(ddd)') }}</td>
                                     </tr>
                                     @endif
                                 @endforeach
@@ -63,14 +57,8 @@
                                     @if (!empty($rentaled_book->return_datetime))
                                     <tr>
                                         <td>{{ $rentaled_book->book->name }}</td>
-                                        @php
-                                            $rentarl_day = date('Y/n/j' , strtotime($rentaled_book->rental_start_datetime));
-                                            $rentarl_day_no = date('w', strtotime($rentarl_day));
-                                            $return_day = date('Y/n/j' , strtotime(($rentaled_book->return_datetime)));
-                                            $return_day_no = date('w', strtotime($return_day));
-                                        @endphp
-                                        <td>{{ $rentarl_day.'(' .$day_of_week[$rentarl_day_no].')' }}</td>
-                                        <td>{{ $return_day.'(' .$day_of_week[$return_day_no].')' }}</td>
+                                        <td>{{ $rental_book->rental_start_datetime->isoFormat('YYYY/MM/DD(ddd)') }}</td>
+                                        <td>{{ $rental_book->return_datetime->isoFormat('YYYY/MM/DD(ddd)') }}</td>
                                     </tr>
                                     @endif
                                 @endforeach

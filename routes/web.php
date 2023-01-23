@@ -24,7 +24,6 @@ use App\Http\Controllers\UserController;
 
 Route::get('/', [bookController::class, 'index'])->name('books.index');
 
-
 Route::group(['middleware' => 'auth'], function() {
     Route::post('/books', [bookController::class, 'store'])->name('books.store');
     Route::get('/mypage', [UserController::class, 'index'])->name('user.mypage');

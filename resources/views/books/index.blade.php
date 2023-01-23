@@ -8,7 +8,7 @@
                 <div class="card-header" style="background-color: #000066; color: white; display: flex; justify-content: space-between;">
                     <div style="display: inline-block;">レンタル商品一覧</div>
                     @if( Auth::check() )
-                        <div style="display: inline-block; "><a href="{{ url('/mypage') }}" class="user-link">現在のレンタル状況</a></div>
+                        <div style="display: inline-block; "><a href="{{ url('/mypage') }}" class="user-link"><i class="fas fa-user"></i>マイページへ</a></div>
                     @endif
                 </div>
                 <div class="card-body">
@@ -17,6 +17,45 @@
                             {{ session('status') }}
                         </div>
                     @endif
+                       <!--検索フォーム-->
+                    <div class="row">
+                        <div class="col-sm">
+                            <form method="GET" action="{{ route('books.index') }}" >
+                                <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">タイトル検索</label>
+                                <!--入力-->
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" name="search_word" value="{{ $search_word }}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row" style="" >
+                                <label class="col-sm-2">商品カテゴリ</label>
+                                    <div class="col-sm-3">
+                                        <select name="category_id" class="form-control">
+                                            <option value="">未選択</option>
+                                            @foreach($categories as $category)
+                                                <option value="{{ $category->id }}" @if($category->id == $category_id) selected @endif>
+                                                    {{ $category->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <label class="col-sm-2">レンタル状況</label>
+                                    <div class="col-sm-3">
+                                        <select name="rental_status" class="form-control" value="">
+                                            <option value="1">全て</option>
+                                            <option value="2" @if($rental_status==2) selected @endif>レンタル可商品のみ</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-auto">
+                                        <button type="submit" class="btn btn-primary" id="search_button">絞り込み</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
                     <table id="table1" class="table table-bordered">
                         <thead>
                         <tr>
@@ -31,14 +70,14 @@
                         @foreach ($books as $book)
                             <tr>
                                 <td>
-                                    @foreach ($book->categories as $category)
-                                        【{{ $category->name }}】<br>
+                                    @foreach ($book->book_categories as $book_category)
+                                        【{{ $book_category->category->name }}】<br>
                                     @endforeach
                                 </td>
                                 <td>{{ $book->name }}</td>
                                 <td>{{ $book->author }}</td>
                                 <td>
-                                    @if ($book->is_rental)
+                                    @if ($book->is_rentable)
                                         <button type="button" class="btn btn-primary"
                                             @if( Auth::check() ) data-toggle="modal" data-target="#rentalButtton{{ $book->id }}"
                                             @else onclick="location.href = '{{ url('/login') }}'" @endif>借りる
@@ -50,11 +89,7 @@
                                 <td>
                                     @foreach ($book->rental_statuses as $rental_status)
                                         @if (empty($rental_status->return_datetime))
-                                            @php
-                                                $scheduled_return_day = date('Y/n/j' , strtotime($rental_status->rental_start_datetime.("+7 day")));
-                                                $day_no = date('w', strtotime($scheduled_return_day));
-                                            @endphp
-                                            {{ $scheduled_return_day.'(' .$day_of_week[$day_no].')' }}
+                                            {{ $rental_status->rental_start_datetime->addDays(7)->isoFormat('YYYY/MM/DD(ddd)') }}
                                         @endif
                                     @endforeach
                                 </td>
@@ -69,7 +104,7 @@
                                                 <h4 class="modal-title" id="myModalLabel">【{{ $book->name }}】レンタルしますか？</h4>
                                             </div>
                                             <div class="modal-body">
-                                                <label>返却予定日 ：{{ date('Y年m月d日('.$day_of_week[date('w')].')',strtotime("+7 day")) }}</label>
+                                                <label>返却予定日 ：{{ now()->addDays(7)->isoFormat('YYYY年MM月DD(ddd)') }}</label>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
@@ -82,14 +117,43 @@
                         @endforeach
                         </tbody>
                     </table>
+                    <div class="mt-4">
+                        {{ $books->links() }}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    $('#search_button').on('click', function () {
+        const search_word = document.getElementsByName('search_word')[0].value;
+        const category_id = document.getElementsByName('category_id')[0].value;
+        const rental_status = document.getElementsByName('rental_status')[0].value;
+        $.ajax(
+        {
+            url: "/",
+            type: "GET",
+            data: {
+                "search_word": search_word,
+                "category_id": category_id,
+                "rental_status": rental_status,
+            },
+            dataType: 'json',
+        })
+        //通信が成功したとき
+        .done((res)=>{
+            console.log(res.message)
+        })
+        //通信が失敗したとき
+        .fail((error)=>{
+            console.log(error.statusText)
+        })
+    });
 
-<script type="text/javascript">
 </script>
+
+
 <style>
 .user-link{
     color: white;
@@ -99,6 +163,8 @@
     text-decoration: underline;
     color: white;
 }
+
+
 </style>
 @endsection
 
