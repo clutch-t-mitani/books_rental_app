@@ -22,35 +22,37 @@
                         <div class="col-sm">
                             <form method="GET" action="{{ route('books.index') }}" >
                                 <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">タイトル検索</label>
+                                <label class="col-sm-2 col-form-label" style="font-size: 0.95em;">タイトル検索</label>
                                 <!--入力-->
                                     <div class="col-sm-5">
                                         <input type="text" class="form-control" name="search_word" value="{{ $search_word }}">
                                     </div>
                                 </div>
 
-                                <div class="form-group row" style="" >
-                                <label class="col-sm-2">商品カテゴリ</label>
-                                    <div class="col-sm-3">
-                                        <select name="category_id" class="form-control">
-                                            <option value="">未選択</option>
-                                            @foreach($categories as $category)
-                                                <option value="{{ $category->id }}" @if($category->id == $category_id) selected @endif>
-                                                    {{ $category->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <label class="col-sm-2">レンタル状況</label>
-                                    <div class="col-sm-3">
-                                        <select name="rental_status" class="form-control" value="">
-                                            <option value="1">全て</option>
-                                            <option value="2" @if($rental_status==2) selected @endif>レンタル可商品のみ</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-auto">
-                                        <button type="submit" class="btn btn-primary" id="search_button">絞り込み</button>
-                                    </div>
+                                <div class="form-group row">
+                                    <label class="col-1" style="font-size: 0.95em;">商品<br>カテゴリ</label>
+                                        <div class="col-3">
+                                            <select name="category_id" class="form-control">
+                                                <option value="">未選択</option>
+                                                @foreach($categories as $category)
+                                                    <option value="{{ $category->id }}" @if($category->id == $category_id) selected @endif>
+                                                        {{ $category->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <label class="col-1" style="font-size: 0.95em;">レンタル状況</label>
+                                        <div class="col-3">
+                                            <select name="rental_status" class="form-control" value="" >
+                                                <option value="1">全て</option>
+                                                <option value="2" @if($rental_status==2) selected @endif>レンタル可商品のみ</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button type="submit" class="btn btn-primary" id="search_button">絞り込み</button>
+                                            {{-- <button type="submit" class="btn btn-link" id="search_clear">クリア</button> --}}
+                                            <a href="/">クリア</a>
+                                        </div>
                                 </div>
                             </form>
                         </div>
@@ -151,6 +153,61 @@
         })
     });
 
+    // $('#search_clear').on('click', function () {
+    //     search_word = "";
+    //     category_id =  "";
+    //     rental_status = 1;
+    //     $.ajax(
+    //     {
+    //         url: "/",
+    //         type: "GET",
+    //         data: {
+    //             "search_word": search_word,
+    //             "category_id": category_id,
+    //             "rental_status": rental_status,
+    //         },
+    //         dataType: 'json',
+    //     })
+    //     //通信が成功したとき
+    //     .done((res)=>{
+    //         console.log(res.message)
+    //     })
+    //     //通信が失敗したとき
+    //     .fail((error)=>{
+    //         console.log(error.statusText)
+    //     })
+    // });
+
+
+    // var input_name = document.getElementById("search_word");
+    // input_name.addEventListener("input",function(){
+    //     const search_word = document.getElementsByName('search_word')[0].value;
+    //     const category_id = document.getElementsByName('category_id')[0].value;
+    //     const rental_status = document.getElementsByName('rental_status')[0].value;
+    //     console.log(search_word);
+    //     $.ajax(
+    //     {
+    //         url: "/",
+    //         type: "GET",
+    //         data: {
+    //             "search_word": search_word,
+    //             "category_id": category_id,
+    //             "rental_status": rental_status,
+    //         },
+    //         dataType: 'json',
+    //     })
+    //     //通信が成功したとき
+    //     .done((res)=>{
+    //         console.log(res.message)
+    //     })
+    //     //通信が失敗したとき
+    //     .fail((error)=>{
+    //         console.log(error.statusText)
+    //     })
+    // });
+
+
+
 </script>
 
 
@@ -163,8 +220,6 @@
     text-decoration: underline;
     color: white;
 }
-
-
 </style>
 @endsection
 
