@@ -22,13 +22,13 @@ class BookController extends Controller
 
         $query = Book::query();
         if (isset($search_word)) {
-            $query->where('name', 'like', '%' . self::escapeLike($search_word) . '%');
+            $query->where('name', 'like', '%' . self::escapeLike($search_word) . '%')->orWhere('author', 'like', '%' . self::escapeLike($search_word) . '%');
         }
 
         if (isset($category_id)) {
             $query->whereHas('book_categories', function($q) use($category_id)  {
                 $q->where('book_category.category_id', $category_id);
-            }); 
+            });
         }
 
         if ($rental_status == 2) {

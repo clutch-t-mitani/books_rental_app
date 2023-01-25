@@ -22,10 +22,10 @@
                         <div class="col-sm">
                             <form method="GET" action="{{ route('books.index') }}" >
                                 <div class="form-group row">
-                                <label class="col-sm-2 col-form-label" style="font-size: 0.95em;">タイトル検索</label>
+                                <label class="col-sm-2 col-form-label" style="font-size: 0.95em;">タイトル or 作者</label>
                                 <!--入力-->
                                     <div class="col-sm-5">
-                                        <input type="text" class="form-control" name="search_word" value="{{ $search_word }}">
+                                        <input type="text" class="form-control" name="search_word" value="{{ $search_word }}" placeholder="検索ワードを入力してください">
                                     </div>
                                 </div>
 
