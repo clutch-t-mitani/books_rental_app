@@ -14,6 +14,9 @@ class BookController extends Controller
 {
     public function index(Request $request)
     {
+
+       $session_data = $request->session()->get('session_data');
+
         $categories = Category::get();
 
         $search_word = $request->search_word; //本の名前

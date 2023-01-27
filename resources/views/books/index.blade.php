@@ -99,7 +99,7 @@
                             <div class="modal fade" id="rentalButtton{{ $book->id }}" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                        <form action="{{ route('books.store') }}" method="post" name="myform">
+                                        <form action="{{ route('cart.add') }}" method="post">
                                             @csrf
                                             <input type="hidden" name="book_id" value="{{ $book->id }}" >
                                             <div class="modal-header">
