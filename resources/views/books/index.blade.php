@@ -12,12 +12,21 @@
                     @endif
                 </div>
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
+                    {{-- フラッシュメッセージ始まり --}}
+                    {{-- 成功の時 --}}
+                    @if (session('successMessage'))
+                        <div class="alert alert-success text-center">
+                            {{ session('successMessage') }}
                         </div>
                     @endif
-                       <!--検索フォーム-->
+                    {{-- 失敗の時 --}}
+                    @if (session('errorMessage'))
+                        <div class="alert alert-danger text-center">
+                            {{ session('errorMessage') }}
+                        </div>
+                    @endif
+                    {{-- フラッシュメッセージ終わり --}}
+                    <!--検索フォーム-->
                     <div class="row">
                         <div class="col-sm">
                             <form method="GET" action="{{ route('books.index') }}" >
@@ -110,7 +119,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-                                                <button type="submit" class="btn btn-primary">レンタルする</button>
+                                                <button type="submit" class="btn btn-primary">カートに入れる</button>
                                         </form>
                                         </div>
                                     </div>

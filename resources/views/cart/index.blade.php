@@ -7,31 +7,18 @@
             <div class="card">
                 <div class="card-header" style="background-color: #000066; color: white; display: flex; justify-content: space-between;">
                     <div style="display: inline-block;"><i class="fas fa-shopping-cart"></i>カート</div>
-                    {{-- @if( Auth::check() )
-                        <div style="display: inline-block; "><a href="{{ url('/mypage') }}" class="user-link"><i class="fas fa-user"></i>マイページへ</a></div>
-                    @endif --}}
                 </div>
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-                    <div style="float: left;">
+                <div style="float: left;">
                         <table class="table">
                             <thead>
-                            <tr>
-                                {{-- <th style="width: 3%">No</th>
-                                <th style="width: 20%">カテゴリー</th>
-                                <th style="width: 35%">タイトル</th>
-                                <th style="width: 20%">作者</th>
-                                <th style="width: 12%"></th> --}}
-                                <th style="width: %">No</th>
-                                <th style="width: %">カテゴリー</th>
-                                <th style="width: %">タイトル</th>
-                                <th style="width: %">作者</th>
-                                <th style="width: %"></th>
-                            </tr>
+                                <tr>
+                                    <th style="width: %">No</th>
+                                    <th style="width: %">カテゴリー</th>
+                                    <th style="width: %">タイトル</th>
+                                    <th style="width: %">作者</th>
+                                    <th style="width: %"></th>
+                                </tr>
                             </thead>
                             <tbody>
                                 @foreach ($in_cart_books as $key => $book)
@@ -46,7 +33,7 @@
                                         <td>{{ $book->name }}</td>
                                         <td>{{ $book->author }}</td>
                                         <td>
-                                            <button type="submit" class="btn btn-link"><i class="fas fa-trash-alt"></i></button>
+                                            <button type="submit" class="btn btn-link" onClick="delete_alert(event);return false;"><i class="fas fa-trash-alt"></i></button>
                                         </td>
                                     </tr>
                                     </form>
@@ -55,15 +42,18 @@
                         </table>
                     </div>
                     <div class="card" style="width:30em; float: right; text-align: center;">
-                        {{-- <div class="card-header">
-                            ステータス
-                        </div> --}}
                         <form action="">
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">返却予定日 ：{{ now()->addDays(7)->isoFormat('YYYY年MM月DD(ddd)') }}</li>
-                                <li class="list-group-item">レンタル合計冊数： {{ count($in_cart_books) }}冊</li>
+                                @if (!empty($in_cart_books))
+                                    <li class="list-group-item">返却予定日 ：{{ now()->addDays(7)->isoFormat('YYYY年MM月DD(ddd)') }}</li>
+                                    <li class="list-group-item">レンタル合計冊数： {{ count($in_cart_books) }}冊</li>
                                     <li class="list-group-item"><button class="btn btn-primary" style="width:80%">レンタルする</button></li>
-                                    <li class="list-group-item"><button class="btn btn-outline-secondary" style="width:80%" onclick="location.href='/'">商品一覧へ戻る</button></li>
+                                @else
+                                    <li class="list-group-item">カートに商品は0点です</li>
+                                @endif
+                                <li class="list-group-item">
+                                    <button type="button" class="btn btn-outline-secondary" style="width:80%" onclick="location.href = '{{ url('/') }}'">商品一覧へ戻る</button>
+                                </li>
                             </ul>
                         </form>
                     </div>
@@ -73,4 +63,12 @@
     </div>
 </div>
 @endsection
+<script>
+    function delete_alert(e){
+        if(!window.confirm('カートから削除しますか？')){
+            return false;
+        }
+        document.deleteform.submit();
+    };
+</script>
 

@@ -12,46 +12,67 @@ use App\Models\RentalStatus;
 
 class CartController extends Controller
 {
+    //カートに一覧
     public function index(Request $request)
     {
-       $user_id = Auth::id();
+    //    $user_id = Auth::id();
        $session_data = [];
        $session_data = $request->session()->get('session_data');
 
        $in_cart_books = [];
        if (isset($session_data)) {
            foreach ($session_data as $value) {
-               if ($value['user_id'] == $user_id) {
                    $in_cart_books[] = Book::findOrFail($value['book_id']);
-               }
            }
        }
 
        return view('cart.index',compact('in_cart_books'));
     }
 
+    //カートに追加
     public function add(Request $request)
     {
-       $user_id = Auth::id();
-       $book_id = $request->book_id;
-       $Session_data = [];
-       $session_data = compact('user_id', 'book_id');
-       $request->session()->push('session_data', $session_data);
+        $book_id = $request->book_id;
+        $book = Book::findOrFail($book_id);
 
-       return redirect('/');
+        try {
+            DB::beginTransaction();
+            if ($book->is_rentable) {
+                $book->is_rentable = false;
+                $book->save();
+
+                $Session_data = [];
+                $session_data = compact('book_id');
+                $request->session()->push('session_data', $session_data);
+                $is_messeage_type = true;
+            } else {
+                session()->flash('msg_danger', 'aaaa');
+                return redirect('/');
+            }
+            DB::commit();
+            session()->flash('msg_success', 'カートに入れました');
+            return redirect('/cart');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            session()->flash('msg_danger', 'カートに入りませんでした');
+            return redirect('/');
+        }
     }
 
+    //カートから削除
     public function delete(Request $request)
     {
-        $session_data = [];
-        $session_data = $request->session()->get('session_data');
+        $sessinon_datas = $request->session()->get('session_data');
 
-        foreach ($session_data  as $key => $value) {
-            if ($value['book_id'] == $request->book_id) {
-                unset($session_data[$key]);
+        //カートから削除したbook_idのkeyを取得
+        $delete_key = null;
+        foreach ($sessinon_datas as $key => $sessinon_data) {
+            if (in_array($request->book_id, $sessinon_data)) {
+                $delete_key = $key ;
             }
         }
 
+        $request->session()->forget('session_data.'.$delete_key);
         return redirect('/cart');
     }
 }

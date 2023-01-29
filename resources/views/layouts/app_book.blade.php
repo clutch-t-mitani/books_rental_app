@@ -82,6 +82,12 @@
                 </div>
             </div>
         </nav>
+        <!-- フラッシュメッセージ -->
+        @if (session('flash_message'))
+            <div class="flash_message">
+                {{ session('flash_message') }}
+            </div>
+         @endif
         <main class="py-4">
             @yield('content')
         </main>
@@ -92,28 +98,16 @@
     {{-- <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script> --}}
 </body>
+</html>
 <script>
-    // $(function(){
-    //     // datatableの設定を変更
-    //     $("#table1").DataTable({
-    //         "language": {
-    //             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Japanese.json"
-    //         }
-    //     });
-    // });
-
-    // {{--成功時--}}
     @if (session('msg_success'))
         $(function () {
             toastr.success('{{ session('msg_success') }}');
         });
-    @endif
-
-    // {{--失敗時--}}
-    @if (session('msg_danger'))
+    @elseif (session('msg_danger'))
         $(function () {
-            toastr.success('{{ session('msg_danger') }}');
+            toastr.error('{{ session('msg_danger') }}');
         });
     @endif
+
 </script>
-</html>
