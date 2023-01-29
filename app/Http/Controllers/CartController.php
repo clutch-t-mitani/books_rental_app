@@ -46,7 +46,7 @@ class CartController extends Controller
                 $request->session()->push('session_data', $session_data);
                 $is_messeage_type = true;
             } else {
-                session()->flash('msg_danger', 'aaaa');
+                session()->flash('msg_danger', 'カートに入れるのに失敗しました');
                 return redirect('/');
             }
             DB::commit();
@@ -54,7 +54,7 @@ class CartController extends Controller
             return redirect('/cart');
         } catch (\Throwable $e) {
             DB::rollBack();
-            session()->flash('msg_danger', 'カートに入りませんでした');
+            session()->flash('msg_danger', 'カートに入れるのに失敗しました');
             return redirect('/');
         }
     }
