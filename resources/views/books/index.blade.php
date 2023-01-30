@@ -87,14 +87,14 @@
                                 </td>
                                 <td>{{ $book->name }}</td>
                                 <td>{{ $book->author }}</td>
-                                <td>
-                                    @if ($book->is_rentable)
+                                <td style="text-align: center;">
+                                    @if ($book->is_rentable && !in_array($book->id,$in_cart_books))
                                         <button type="button" class="btn btn-primary"
                                             @if( Auth::check() ) data-toggle="modal" data-target="#rentalButtton{{ $book->id }}"
                                             @else onclick="location.href = '{{ url('/login') }}'" @endif>借りる
                                         </button>
                                     @else
-                                        貸出中
+                                        <i class="fas fa-times"></i>
                                     @endif
                                 </td>
                                 <td>
@@ -160,6 +160,10 @@
         .fail((error)=>{
             console.log(error.statusText)
         })
+    });
+    //戻るボタンで戻ってきた際、強制リロード
+    window.addEventListener('pageshow',()=>{
+	    if(window.performance.navigation.type==2) location.reload();
     });
 
     // $('#search_clear').on('click', function () {

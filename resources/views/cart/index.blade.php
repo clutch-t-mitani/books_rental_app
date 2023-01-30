@@ -44,7 +44,7 @@
                     <div class="card" style="width:30em; float: right; text-align: center;">
                         <form action="">
                             <ul class="list-group list-group-flush">
-                                @if (!empty($in_cart_books))
+                                @if (!empty($in_cart_books) )
                                     <li class="list-group-item">返却予定日 ：{{ now()->addDays(7)->isoFormat('YYYY年MM月DD(ddd)') }}</li>
                                     <li class="list-group-item">レンタル合計冊数： {{ count($in_cart_books) }}冊</li>
                                     <li class="list-group-item"><button class="btn btn-primary" style="width:80%">レンタルする</button></li>
@@ -70,5 +70,8 @@
         }
         document.deleteform.submit();
     };
+    window.addEventListener('pageshow',()=>{
+	    if(window.performance.navigation.type==2) location.reload();
+    });
 </script>
 

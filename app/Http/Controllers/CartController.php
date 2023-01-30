@@ -17,7 +17,6 @@ class CartController extends Controller
     {
        $session_data = [];
        $session_data = $request->session()->get('session_data');
-       dd($session_data);
 
        $in_cart_books = [];
        if (isset($session_data)) {
@@ -38,8 +37,6 @@ class CartController extends Controller
         try {
             DB::beginTransaction();
             if ($book->is_rentable) {
-                $book->is_rentable = false;
-                $book->save();
 
                 $session_data = [];
                 $session_data = compact('book_id');
