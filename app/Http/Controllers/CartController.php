@@ -15,9 +15,9 @@ class CartController extends Controller
     //カートに一覧
     public function index(Request $request)
     {
-    //    $user_id = Auth::id();
        $session_data = [];
        $session_data = $request->session()->get('session_data');
+       dd($session_data);
 
        $in_cart_books = [];
        if (isset($session_data)) {
@@ -41,10 +41,9 @@ class CartController extends Controller
                 $book->is_rentable = false;
                 $book->save();
 
-                $Session_data = [];
+                $session_data = [];
                 $session_data = compact('book_id');
                 $request->session()->push('session_data', $session_data);
-                $is_messeage_type = true;
             } else {
                 session()->flash('msg_danger', 'カートに追加できませんでした');
                 return redirect('/');
