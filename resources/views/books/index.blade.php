@@ -8,7 +8,10 @@
                 <div class="card-header" style="background-color: #000066; color: white; display: flex; justify-content: space-between;">
                     <div style="display: inline-block;">レンタル商品一覧</div>
                     @if( Auth::check() )
-                        <div style="display: inline-block; "><a href="{{ url('/mypage') }}" class="user-link"><i class="fas fa-user"></i>マイページへ</a></div>
+                        <div style="display: inline-block; ">
+                            <a href="{{ url('/mypage') }}" class="user-link"><i class="fas fa-user"></i> マイページへ</a><br>
+                            <a href="{{ url('/cart') }}" class="user-link"><i class="fas fa-shopping-cart"></i> カートへ （現在{{ count($in_cart_books) }} 冊）</a>
+                        </div>
                     @endif
                 </div>
                 <div class="card-body">
