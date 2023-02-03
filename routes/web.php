@@ -28,9 +28,10 @@ Route::get('/', [bookController::class, 'index'])->name('books.index');
 Route::group(['middleware' => 'auth'], function() {
     Route::post('/', [bookController::class, 'store'])->name('books.store');
     Route::get('/mypage', [UserController::class, 'index'])->name('user.mypage');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/add', [CartController::class, 'add'])->name('cart.add');
     Route::post('/cart_delete', [CartController::class, 'delete'])->name('cart.delete');
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
 });
 
 Auth::routes();

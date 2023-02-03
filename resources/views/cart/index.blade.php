@@ -23,13 +23,15 @@
                             <tbody>
                                 @foreach ($in_cart_books as $key => $book)
                                     <form action="{{ route('cart.delete') }}" method="POST">
-                                        @csrf
+                                    @csrf
                                     <input type="hidden" name="book_id" value="{{ $book->id }}">
                                     <tr>
                                         <td>{{ $key+1 }}</td>
-                                        @foreach ($book->book_categories as $category)
-                                            <td>{{ $category->category->name }}</td>
-                                        @endforeach
+                                        <td>
+                                            @foreach ($book->book_categories as $category)
+                                                {{ $category->category->name }}<br>
+                                            @endforeach
+                                         </td>
                                         <td>{{ $book->name }}</td>
                                         <td>{{ $book->author }}</td>
                                         <td>
@@ -42,12 +44,16 @@
                         </table>
                     </div>
                     <div class="card" style="width:30em; float: right; text-align: center;">
-                        <form action="">
+                        <form action="{{ route('cart.store') }}" method="POST">
+                        @csrf
+                            @foreach ($in_cart_books as $book)
+                                <input type="hidden" name="book_id[]" value="{{ $book->id }}" >
+                            @endforeach
                             <ul class="list-group list-group-flush">
                                 @if (!empty($in_cart_books) )
                                     <li class="list-group-item">返却予定日 ：{{ now()->addDays(7)->isoFormat('YYYY年MM月DD(ddd)') }}</li>
                                     <li class="list-group-item">レンタル合計冊数： {{ count($in_cart_books) }}冊</li>
-                                    <li class="list-group-item"><button class="btn btn-primary" style="width:80%">レンタルする</button></li>
+                                    <li class="list-group-item"><button class="btn btn-primary" style="width:80%" onClick="rental_alert(event);return false;">レンタルする</button></li>
                                 @else
                                     <li class="list-group-item">カートに商品は0点です</li>
                                 @endif
@@ -66,6 +72,13 @@
 <script>
     function delete_alert(e){
         if(!window.confirm('カートから削除しますか？')){
+            return false;
+        }
+        document.deleteform.submit();
+    };
+
+    function rental_alert(e){
+        if(!window.confirm('カート内商品をレンタルしますか？')){
             return false;
         }
         document.deleteform.submit();
