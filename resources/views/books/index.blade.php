@@ -87,11 +87,9 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @foreach ($book->rental_statuses as $rental_status)
-                                        @if (empty($rental_status->return_datetime))
-                                            {{ $rental_status->rental_start_datetime->addDays(7)->isoFormat('YYYY/MM/DD(ddd)') }}
-                                        @endif
-                                    @endforeach
+                                    @if (count($book->rental_statuses) && empty($book->rental_statuses[count($book->rental_statuses)-1]->return_datetime))
+                                        {{ $book->rental_statuses[count($book->rental_statuses)-1]->rental_start_datetime->addDays(7)->isoFormat('YYYY/MM/DD(ddd)') }}
+                                    @endif
                                 </td>
                             </tr>
                             <div class="modal fade" id="rentalButtton{{ $book->id }}" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
