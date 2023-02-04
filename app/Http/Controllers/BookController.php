@@ -14,8 +14,16 @@ class BookController extends Controller
 {
     public function index(Request $request)
     {
-        $categories = Category::get();
+        $session_data = [];
+        $session_data = $request->session()->get('session_data');
+        $in_cart_books = [];
+        if (!empty($session_data)) {
+            foreach ($session_data as $key => $book_id) {
+                array_push($in_cart_books,$book_id['book_id']);
+            }
+        }
 
+        $categories = Category::get();
         $search_word = $request->search_word; //本の名前
         $category_id = $request->category_id; //カテゴリー
         $rental_status = $request->rental_status; //レンタル状況
@@ -37,35 +45,7 @@ class BookController extends Controller
 
         $books = $query->paginate(10);
 
-        return view('books.index',compact('books','categories','search_word','rental_status','category_id'));
-    }
-
-    public function store(Request $request)
-    {
-        $book = Book::findOrFail($request->book_id);
-
-        try {
-            DB::beginTransaction();
-            if ($book->is_rentable) {
-                $book->is_rentable = false;
-                $book->save();
-
-                $rental_status = new RentalStatus();
-                $rental_status->user_id = Auth::id();
-                $rental_status->book_id = $request->book_id;
-                $rental_status->rental_start_datetime = now();
-                $rental_status->save();
-            } else {
-                return redirect('/')->with('msg_danger', 'レンタルできませんでした');
-            }
-            DB::commit();
-            return redirect('/')->with('msg_success', 'レンタルしました');
-
-        } catch (\Throwable $e) {
-            DB::rollBack();
-            return redirect('/')->with('msg_danger', 'レンタルできませんでした');
-        }
-
+        return view('books.index',compact('books','categories','search_word','rental_status','category_id','in_cart_books'));
     }
 
     public static function escapeLike($str)

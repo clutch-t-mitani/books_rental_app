@@ -8,16 +8,14 @@
                 <div class="card-header" style="background-color: #000066; color: white; display: flex; justify-content: space-between;">
                     <div style="display: inline-block;">レンタル商品一覧</div>
                     @if( Auth::check() )
-                        <div style="display: inline-block; "><a href="{{ url('/mypage') }}" class="user-link"><i class="fas fa-user"></i>マイページへ</a></div>
+                        <div style="display: inline-block; ">
+                            <a href="{{ url('/mypage') }}" class="user-link"><i class="fas fa-user"></i> マイページへ</a><br>
+                            <a href="{{ url('/cart') }}" class="user-link"><i class="fas fa-shopping-cart"></i> カートへ （現在{{ count($in_cart_books) }} 冊）</a>
+                        </div>
                     @endif
                 </div>
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-                       <!--検索フォーム-->
+                    <!--検索フォーム-->
                     <div class="row">
                         <div class="col-sm">
                             <form method="GET" action="{{ route('books.index') }}" >
@@ -78,28 +76,26 @@
                                 </td>
                                 <td>{{ $book->name }}</td>
                                 <td>{{ $book->author }}</td>
-                                <td>
-                                    @if ($book->is_rentable)
+                                <td style="text-align: center;">
+                                    @if ($book->is_rentable && !in_array($book->id,$in_cart_books))
                                         <button type="button" class="btn btn-primary"
                                             @if( Auth::check() ) data-toggle="modal" data-target="#rentalButtton{{ $book->id }}"
                                             @else onclick="location.href = '{{ url('/login') }}'" @endif>借りる
                                         </button>
                                     @else
-                                        貸出中
+                                        <i class="fas fa-times"></i>
                                     @endif
                                 </td>
                                 <td>
-                                    @foreach ($book->rental_statuses as $rental_status)
-                                        @if (empty($rental_status->return_datetime))
-                                            {{ $rental_status->rental_start_datetime->addDays(7)->isoFormat('YYYY/MM/DD(ddd)') }}
-                                        @endif
-                                    @endforeach
+                                    @if (count($book->rental_statuses) && empty($book->rental_statuses[count($book->rental_statuses)-1]->return_datetime))
+                                        {{ $book->rental_statuses[count($book->rental_statuses)-1]->rental_start_datetime->addDays(7)->isoFormat('YYYY/MM/DD(ddd)') }}
+                                    @endif
                                 </td>
                             </tr>
                             <div class="modal fade" id="rentalButtton{{ $book->id }}" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                        <form action="{{ route('books.store') }}" method="post" name="myform">
+                                        <form action="{{ route('cart.add') }}" method="post">
                                             @csrf
                                             <input type="hidden" name="book_id" value="{{ $book->id }}" >
                                             <div class="modal-header">
@@ -110,7 +106,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-                                                <button type="submit" class="btn btn-primary">レンタルする</button>
+                                                <button type="submit" class="btn btn-primary">カートに入れる</button>
                                         </form>
                                         </div>
                                     </div>
@@ -151,6 +147,10 @@
         .fail((error)=>{
             console.log(error.statusText)
         })
+    });
+    //戻るボタンで戻ってきた際、強制リロード
+    window.addEventListener('pageshow',()=>{
+	    if(window.performance.navigation.type==2) location.reload();
     });
 
     // $('#search_clear').on('click', function () {
