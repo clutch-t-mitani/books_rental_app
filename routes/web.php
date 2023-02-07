@@ -6,6 +6,7 @@ use App\Http\Controllers\admin\RegisterController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminRentalBookController;
 
 
 /*
@@ -37,6 +38,13 @@ Route::group(['middleware' => 'auth'], function() {
 Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/admin/rental_books', [AdminRentalBookController::class, 'index'])->name('admin.index');
+    Route::post('/admin/rental_books', [AdminRentalBookController::class, 'update'])->name('admin.update');
+
+});
+
 
 Route::view('/admin/login', 'admin/login');
 Route::post('/admin/login', [LoginController::class, 'login']);

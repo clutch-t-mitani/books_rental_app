@@ -1,16 +1,14 @@
-@extends('layouts.app_book')
+@extends('layouts.app_admin')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-17">
             <div class="card">
-                <div class="card-header" style="background-color: #000066; color: white; display: flex; justify-content: space-between;">
-                    <div style="display: inline-block;">レンタル商品一覧</div>
+                <div class="card-header" style="background-color: #00FF00; display: flex; justify-content: space-between;">
+                    <div style="display: inline-block;">レンタル済み商品一覧</div>
                     @if( Auth::check() )
                         <div style="display: inline-block; ">
-                            <a href="{{ url('/mypage') }}" class="user-link"><i class="fas fa-user"></i> マイページへ</a><br>
-                            <a href="{{ url('/cart') }}" class="user-link"><i class="fas fa-shopping-cart"></i> カートへ （現在{{ count($in_cart_books) }} 冊）</a>
                         </div>
                     @endif
                 </div>
@@ -18,9 +16,16 @@
                     <!--検索フォーム-->
                     <div class="row">
                         <div class="col-sm">
-                            <form method="GET" action="{{ route('books.index') }}" >
+                            <form method="GET" action="{{ route('admin.index') }}" >
                                 <div class="form-group row">
-                                <label class="col-sm-2 col-form-label" style="font-size: 0.95em;">タイトル or 作者</label>
+                                <label class="col-sm-2 col-form-label" style="font-size: 0.95em;">タイトル or 作者 <br>or レンタル者</label>
+                                    {{-- <label class="col-sm-2 col-form-label" style="font-size: 0.95em; padding-top:0px">
+                                        <select class="form-select">
+                                            <option value="">タイトル</option>
+                                            <option value="">作者</option>
+                                            <option value="">レンタル者</option>
+                                        </select>
+                                    </label> --}}
                                 <!--入力-->
                                     <div class="col-sm-5">
                                         <input type="text" class="form-control" name="search_word" value="{{ $search_word }}" placeholder="検索ワードを入力してください">
@@ -42,81 +47,79 @@
                                         <label class="col-1" style="font-size: 0.95em;">レンタル状況</label>
                                         <div class="col-3">
                                             <select name="rental_status" class="form-control" value="" >
-                                                <option value="1">全て</option>
-                                                <option value="2" @if($rental_status==2) selected @endif>レンタル可商品のみ</option>
+                                                <option value="1" >全て</option>
+                                                <option value="2" @if($rental_status==2) selected @endif>レンタル中</option>
+                                                <option value="3" @if($rental_status==3) selected @endif>返却済</option>
                                             </select>
                                         </div>
                                         <div class="col-auto">
                                             <button type="submit" class="btn btn-primary" id="search_button">絞り込み</button>
-                                            {{-- <button type="submit" class="btn btn-link" id="search_clear">クリア</button> --}}
-                                            <a href="/">クリア</a>
+                                            <a href="/admin/rental_books">クリア</a>
                                         </div>
                                 </div>
                             </form>
                         </div>
                     </div>
-
                     <table id="table1" class="table table-bordered">
                         <thead>
-                        <tr>
-                            <th style="width: 20%">カテゴリー</th>
-                            <th style="width: 35%">タイトル</th>
-                            <th style="width: 25%">作者</th>
-                            <th style="width: 10%">状況</th>
-                            <th style="width: 10%">返却予定日</th>
-                        </tr>
+                            <tr>
+                                <th style="width: 10%">レンタル者</th>
+                                <th style="width: 20%">カテゴリー</th>
+                                <th style="width: 30%">タイトル</th>
+                                <th style="width: 15%">作者</th>
+                                <th style="width: 15%">レンタル日<br>返却期日</th>
+                                <th style="width: 10%"></th>
+                            </tr>
                         </thead>
                         <tbody>
-                        @foreach ($books as $book)
-                            <tr>
+                        @foreach ($rentaled_book_statues as $rentaled_book_status)
+                            <tr style={{ !is_null($rentaled_book_status->return_datetime)? "color:red;": '' }}?>
+                                <td>{{ $rentaled_book_status->user->name }}</td>
                                 <td>
-                                    @foreach ($book->book_categories as $book_category)
+                                    @foreach ($rentaled_book_status->book->book_categories as $book_category)
                                         【{{ $book_category->category->name }}】<br>
                                     @endforeach
                                 </td>
-                                <td>{{ $book->name }}</td>
-                                <td>{{ $book->author }}</td>
-                                <td style="text-align: center;">
-                                    @if ($book->is_rentable && !in_array($book->id,$in_cart_books))
-                                        <button type="button" class="btn btn-primary"
-                                            @if( Auth::check() ) data-toggle="modal" data-target="#rentalButtton{{ $book->id }}"
-                                            @else onclick="location.href = '{{ url('/login') }}'" @endif>借りる
-                                        </button>
-                                    @else
-                                        <i class="fas fa-times"></i>
-                                    @endif
+                                <td>{{ $rentaled_book_status->book->name }}</td>
+                                <td>{{ $rentaled_book_status->book->author }}</td>
+                                <td>
+                                    {{ $rentaled_book_status->rental_start_datetime->isoFormat('YYYY/MM/DD(ddd)') }}<br>
+                                    {{ $rentaled_book_status->rental_start_datetime->addDays(7)->isoFormat('YYYY/MM/DD(ddd)') }}
                                 </td>
                                 <td>
-                                    @if (count($book->rental_statuses) && empty($book->rental_statuses[count($book->rental_statuses)-1]->return_datetime))
-                                        {{ $book->rental_statuses[count($book->rental_statuses)-1]->rental_start_datetime->addDays(7)->isoFormat('YYYY/MM/DD(ddd)') }}
+                                    @if (is_null($rentaled_book_status->return_datetime))
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#returnButtton{{ $rentaled_book_status->id }}">返却</button>
+                                    @else
+                                        返却済
                                     @endif
                                 </td>
                             </tr>
-                            <div class="modal fade" id="rentalButtton{{ $book->id }}" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+                            <div class="modal fade" id="returnButtton{{ $rentaled_book_status->id }}" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                        <form action="{{ route('cart.add') }}" method="post">
+                                        <form action="{{ route('admin.update') }}" method="post">
                                             @csrf
-                                            <input type="hidden" name="book_id" value="{{ $book->id }}" >
+                                            <input type="hidden" name="status_id" value="{{ $rentaled_book_status->id }}" >
                                             <div class="modal-header">
-                                                <h4 class="modal-title" id="myModalLabel">【{{ $book->name }}】レンタルしますか？</h4>
+                                                <h4 class="modal-title" id="myModalLabel">【{{ $rentaled_book_status->book->name }}】返却登録しますか？</h4>
                                             </div>
                                             <div class="modal-body">
-                                                <label>返却期日 ：{{ now()->addDays(7)->isoFormat('YYYY年MM月DD(ddd)') }}</label>
+                                                <label>レンタル者：  {{ $rentaled_book_status->user->name }} 様</label><br>
+                                                <label>返却期日：  {{ $rentaled_book_status->rental_start_datetime->addDays(7)->isoFormat('YYYY年MM月DD(ddd)') }}</label>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-                                                <button type="submit" class="btn btn-primary">カートに入れる</button>
+                                                <button type="submit" class="btn btn-primary">返却登録する</button>
                                         </form>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+
                         @endforeach
                         </tbody>
                     </table>
                     <div class="mt-4">
-                        {{ $books->links() }}
+                        {{ $rentaled_book_statues->links() }}
                     </div>
                 </div>
             </div>

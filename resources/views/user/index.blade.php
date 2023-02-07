@@ -27,7 +27,7 @@
                                 <tr style="background-color: #FFFFDD;">
                                     <th>タイトル</th>
                                     <th>レンタル日</th>
-                                    <th>返却予定日</th>
+                                    <th>返却期日</th>
                                 </tr>
                             </thead>
                             <tbody>
