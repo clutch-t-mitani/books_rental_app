@@ -39,7 +39,7 @@ Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => 'auth:admin'], function() {
     Route::get('/admin/rental_books', [AdminRentalBookController::class, 'index'])->name('admin.index');
     Route::post('/admin/rental_books', [AdminRentalBookController::class, 'update'])->name('admin.update');
 
