@@ -11,6 +11,9 @@ class UserController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('user.index',compact('user'));
+        //レンタル中の本一覧
+        $rental_statues = $user->rental_statuses->whereNull('return_datetime')->sortBy('rental_start_datetime');
+
+        return view('user.index',compact('user','rental_statues'));
     }
 }
