@@ -38,8 +38,12 @@
                     </div>
                     <div class="card" style="width:30em; float: right; text-align: center; margin-top: 30px">
                         <ul class="list-group list-group-flush">
+                            @if ($due_return_date->isNotEmpty())
+                                <li class="list-group-item" style="color:red">
+                                    <i class="fas fa-exclamation-triangle"></i>返却期日超えの本が{{ count($due_return_date) }}冊あります<i class="fas fa-exclamation-triangle"></i>
+                                </li>
+                            @endif
                             <li class="list-group-item">お名前：{{ $user->name }}様</li>
-                            <li class="list-group-item">メールアドレス： {{ $user->email }}様</li>
                             <li class="list-group-item">レンタル中：{{ count($rental_statues) }}冊</li>
                             <li class="list-group-item">
                                 <button type="button" class="btn btn-outline-secondary" style="width:80%" onclick="location.href = '{{ url('/') }}'">商品一覧へ戻る</button>

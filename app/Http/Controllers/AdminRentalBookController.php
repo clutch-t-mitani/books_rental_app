@@ -41,11 +41,14 @@ class AdminRentalBookController extends Controller
             $query->whereNull('return_datetime');
         } elseif ($rental_status == 3) {
             $query->whereNotNull('return_datetime');
+        } elseif ($rental_status == 4) {
+            $query->whereNull('return_datetime')->where('rental_start_datetime', '<' ,now()->subDay(8));
         }
 
         $rentaled_book_statues = $query->orderBy('rental_start_datetime', 'desc')->paginate(10);
-
-        return view('admin.index',compact('categories','search_word','category_id','rental_status','rentaled_book_statues'));
+        //未返却で期日切れのステータス
+        $due_return_date = $query->whereNull('return_datetime')->where('rental_start_datetime', '<' ,now()->subDay(8))->get();
+        return view('admin.index',compact('categories','search_word','category_id','rental_status','rentaled_book_statues','due_return_date'));
     }
 
     public function update(Request $request)

@@ -50,6 +50,7 @@
                                                 <option value="1" >全て</option>
                                                 <option value="2" @if($rental_status==2) selected @endif>レンタル中</option>
                                                 <option value="3" @if($rental_status==3) selected @endif>返却済</option>
+                                                <option value="4" @if($rental_status==4) selected @endif>返却期日超え</option>
                                             </select>
                                         </div>
                                         <div class="col-auto">
@@ -60,6 +61,11 @@
                             </form>
                         </div>
                     </div>
+                    @if ($due_return_date->isNotEmpty())
+                        <div style="color:red">
+                            <i class="fas fa-exclamation-triangle"></i>返却期日超えの本が{{ count($due_return_date)}}冊あります<i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    @endif
                     <table id="table1" class="table table-bordered">
                         <thead>
                             <tr>
@@ -73,8 +79,8 @@
                         </thead>
                         <tbody>
                         @foreach ($rentaled_book_statues as $rentaled_book_status)
-                            <tr style={{ !is_null($rentaled_book_status->return_datetime)? "color:red;": '' }}?>
-                                <td>{{ $rentaled_book_status->user->name }}</td>
+                            <tr style="{{ $due_return_date->whereIn('id',$rentaled_book_status->id)->isNotEmpty()? "color: red;": "" }}">
+                                <td>{{ $rentaled_book_status->user->name  }}</td>
                                 <td>
                                     @foreach ($rentaled_book_status->book->book_categories as $book_category)
                                         【{{ $book_category->category->name }}】<br>
