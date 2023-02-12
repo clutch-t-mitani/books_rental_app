@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class RentalStatus extends Model
 {
@@ -31,5 +32,18 @@ class RentalStatus extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function scopeIsOverReturnDate(Builder $query)
+    {
+        return $query->whereNull('return_datetime')->where('rental_statuses.rental_start_datetime', '<' ,now()->subDay(8));
+      //   $due_return_date = $rental_statues->where('rental_start_datetime', '<' ,now()->subDay(8));
+    }
+
+    public function scopeUserId(Builder $query ,$user_id)
+    {
+        return $query->where('rental_statuses.user_id', $user_id);
+      //   $due_return_date = $rental_statues->where('rental_start_datetime', '<' ,now()->subDay(8));
+    }
+
 
 }
