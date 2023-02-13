@@ -47,7 +47,7 @@
                                         <label class="col-1" style="font-size: 0.95em;">レンタル状況</label>
                                         <div class="col-3">
                                             <select name="rental_status" class="form-control" value="" >
-                                                <option value="1" >全て</option>
+                                                <option value="" >全て</option>
                                                 <option value="2" @if($rental_status==2) selected @endif>レンタル中</option>
                                                 <option value="3" @if($rental_status==3) selected @endif>返却済</option>
                                                 <option value="4" @if($rental_status==4) selected @endif>返却期日超え</option>
@@ -125,7 +125,7 @@
                         </tbody>
                     </table>
                     <div class="mt-4">
-                        {{ $rentaled_book_statues->links() }}
+                        {{ $rentaled_book_statues->render() }}
                     </div>
                 </div>
             </div>

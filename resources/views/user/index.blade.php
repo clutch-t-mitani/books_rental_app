@@ -25,7 +25,7 @@
                                     <tr style={{ now() > $status->rental_start_datetime->addDays(7)? "color:red" : "" }}>
                                         <td>
                                             @foreach ($status->book->book_categories as $book_category)
-                                                【{{ $book_category->category->name }} 】
+                                                【{{ $book_category->category->name }} 】<br>
                                             @endforeach
                                         </td>
                                         <td>{{ $status->book->name }}</td>

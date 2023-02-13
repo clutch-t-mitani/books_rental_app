@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Book;
+use App\Models\User;
 use App\Models\Category;
 use App\Models\BookCategory;
 use App\Models\RentalStatus;
+use GuzzleHttp\Client;
+
 
 class CartController extends Controller
 {
@@ -109,6 +112,14 @@ class CartController extends Controller
         if (!empty($success_rental_books)) {
             $success_books = implode("、", $success_rental_books);
             $succes_message = $success_books.'をレンタルしました。';
+            $rental_user = User::find(Auth::id())->name;
+
+            $token = "912b8619c14dbb1fdc5b4224e9d84c89";    // 取得したAPIトークン
+            $room_id = "310080596";     // 取得したルームID
+            $url = "https://api.chatwork.com/v2/rooms/{$room_id}/messages";
+            $body = 'レンタル者:'.$rental_user.'様'."\n".$succes_message;
+
+            Book::chat_work($token,$room_id,$url,$body);
             session()->flash('msg_success', $succes_message);
         }
 
