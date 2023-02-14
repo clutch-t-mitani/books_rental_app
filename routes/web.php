@@ -7,6 +7,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminRentalBookController;
+use App\Http\Controllers\ContactsController;
 
 
 /*
@@ -52,3 +53,10 @@ Route::post('admin/logout', [LoginController::class,'logout']);
 Route::view('/admin/register', 'admin/register');
 Route::post('/admin/register', [RegisterController::class, 'register']);
 Route::view('/admin/home', 'admin/home')->middleware('auth:admin');
+
+//入力フォームページ
+Route::get('/contact', [ContactsController::class, 'index'])->name('contact.index');
+//確認フォームページ
+Route::post('/contact/confirm', [ContactsController::class, 'confirm'])->name('contact.confirm');
+//送信完了ページ
+Route::post('/contact/thanks', [ContactsController::class, 'send'])->name('contact.send');
