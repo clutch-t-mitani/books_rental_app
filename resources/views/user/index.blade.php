@@ -22,7 +22,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($rental_statues as $status)
-                                    <tr style={{ now() > $status->rental_start_datetime->addDays(7)? "color:red" : "" }}>
+                                    <tr style={{ now() > $status->rental_start_datetime->addDays(8)? "color:red" : "" }}>
                                         <td>
                                             @foreach ($status->book->book_categories as $book_category)
                                                 【{{ $book_category->category->name }} 】<br>
