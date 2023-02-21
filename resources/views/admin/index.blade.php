@@ -80,6 +80,7 @@
                         <tbody>
                         @foreach ($rentaled_book_statues as $rentaled_book_status)
                             <tr style="{{ $due_return_date->whereIn('id',$rentaled_book_status->id)->isNotEmpty()? "color: red;": "" }}">
+                                {{-- <td>{{ $rentaled_book_status->user->name  }}</td> --}}
                                 <td>{{ $rentaled_book_status->user->name  }}</td>
                                 <td>
                                     @foreach ($rentaled_book_status->book->book_categories as $book_category)
