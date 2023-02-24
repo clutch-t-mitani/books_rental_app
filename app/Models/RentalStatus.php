@@ -33,6 +33,9 @@ class RentalStatus extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    /**
+     * 返却期日を超過したレンタルステータスの一覧
+     */
     public function scopeIsOverReturnDate(Builder $query)
     {
         return $query->whereNull('return_datetime')->where('rental_statuses.rental_start_datetime', '<' ,now()->subDay(8));
