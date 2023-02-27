@@ -45,6 +45,7 @@ Route::group(['middleware' => 'auth:admin'], function() {
     Route::post('/admin/rental_books', [AdminRentalBookController::class, 'update'])->name('admin.update');
     Route::get('/admin/books', [AdminBookController::class, 'index'])->name('admin.book');
     Route::post('/admin/books', [AdminBookController::class, 'update'])->name('admin.book.update');
+    Route::post('/admin/books/delete', [AdminBookController::class, 'delete'])->name('admin.book.delete');
 });
 
 

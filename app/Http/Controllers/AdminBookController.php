@@ -17,7 +17,6 @@ class AdminBookController extends Controller
         $book_categories = BookCategory::get();
         $search_word = $request->search_word; //本の名前
         $category_id = $request->category_id; //カテゴリー
-        $rental_status = $request->rental_status; //レンタル状況
 
         $query = Book::query();
         if (isset($search_word)) {
@@ -30,19 +29,10 @@ class AdminBookController extends Controller
             });
         }
 
-        // if ($rental_status == 2) {
-        //     $query->whereNull('return_datetime');
-        // } elseif ($rental_status == 3) {
-        //     $query->whereNotNull('return_datetime');
-        // } elseif ($rental_status == 4) {
-        //     $query->whereNull('return_datetime')->where('rental_start_datetime', '<' ,now()->subDay(8));
-        // }
-
         $books = $query->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('admin.book',compact('categories','search_word','category_id','rental_status','books','book_categories'));
+        return view('admin.book',compact('categories','search_word','category_id','books','book_categories'));
     }
-
 
     public function update(Request $request)
     {
@@ -63,12 +53,30 @@ class AdminBookController extends Controller
                     $book_category->save();
                 }
             }
+
             DB::commit();
             session()->flash('msg_success', '編集に成功しました');
             return redirect('/admin/books');
         } catch (\Throwable $e) {
             DB::rollBack();
             session()->flash('msg_danger', '編集に失敗しました。');
+            return redirect('/admin/books');
+        }
+    }
+
+    public function delete(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            Book::where('id',$request->id)->delete();
+            BookCategory::where('book_id',$request->id)->delete();
+
+            DB::commit();
+            session()->flash('msg_success', '削除しました。');
+            return redirect('/admin/books');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            session()->flash('msg_danger', '削除に失敗しました。');
             return redirect('/admin/books');
         }
     }
