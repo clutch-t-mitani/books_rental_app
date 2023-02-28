@@ -36,13 +36,13 @@ Route::middleware('auth')->group(function() {
 Auth::routes();
 
 
-Route::middleware('auth:admin')->name('admin.')->prefix('admin/')->group(function() {
-    Route::get('rental_books', [AdminRentalBookController::class, 'index'])->name('index');
-    Route::post('rental_books', [AdminRentalBookController::class, 'update'])->name('update');
-    Route::get('books', [AdminBookController::class, 'index'])->name('book');
-    Route::post('books', [AdminBookController::class, 'update'])->name('book.update');
-    Route::post('books/create', [AdminBookController::class, 'create'])->name('book.create');
-    Route::post('books/delete', [AdminBookController::class, 'delete'])->name('book.delete');
+Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function() {
+    Route::get('/rental_books', [AdminRentalBookController::class, 'index'])->name('index');
+    Route::post('/rental_books', [AdminRentalBookController::class, 'update'])->name('update');
+    Route::get('/books', [AdminBookController::class, 'index'])->name('book');
+    Route::post('/books', [AdminBookController::class, 'update'])->name('book.update');
+    Route::post('/books/create', [AdminBookController::class, 'create'])->name('book.create');
+    Route::post('/books/delete', [AdminBookController::class, 'delete'])->name('book.delete');
 });
 
 
