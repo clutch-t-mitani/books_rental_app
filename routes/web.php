@@ -21,13 +21,10 @@ use App\Http\Controllers\AdminBookController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 Route::get('/', [bookController::class, 'index'])->name('books.index');
 
-Route::group(['middleware' => 'auth'], function() {
+Route::middleware('auth')->group(function() {
     Route::post('/', [bookController::class, 'store'])->name('books.store');
     Route::get('/mypage', [UserController::class, 'index'])->name('user.mypage');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -38,14 +35,14 @@ Route::group(['middleware' => 'auth'], function() {
 
 Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::group(['middleware' => 'auth:admin'], function() {
-    Route::get('/admin/rental_books', [AdminRentalBookController::class, 'index'])->name('admin.index');
-    Route::post('/admin/rental_books', [AdminRentalBookController::class, 'update'])->name('admin.update');
-    Route::get('/admin/books', [AdminBookController::class, 'index'])->name('admin.book');
-    Route::post('/admin/books', [AdminBookController::class, 'update'])->name('admin.book.update');
-    Route::post('/admin/books/delete', [AdminBookController::class, 'delete'])->name('admin.book.delete');
+Route::middleware('auth:admin')->name('admin.')->prefix('admin/')->group(function() {
+    Route::get('rental_books', [AdminRentalBookController::class, 'index'])->name('index');
+    Route::post('rental_books', [AdminRentalBookController::class, 'update'])->name('update');
+    Route::get('books', [AdminBookController::class, 'index'])->name('book');
+    Route::post('books', [AdminBookController::class, 'update'])->name('book.update');
+    Route::post('books/create', [AdminBookController::class, 'create'])->name('book.create');
+    Route::post('books/delete', [AdminBookController::class, 'delete'])->name('book.delete');
 });
 
 

@@ -100,27 +100,8 @@
                                     @endif
                                 </td>
                             </tr>
-                            <div class="modal fade" id="returnButtton{{ $rentaled_book_status->id }}" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <form action="{{ route('admin.update') }}" method="post">
-                                            @csrf
-                                            <input type="hidden" name="status_id" value="{{ $rentaled_book_status->id }}" >
-                                            <div class="modal-header">
-                                                <h4 class="modal-title" id="myModalLabel">【{{ $rentaled_book_status->book->name }}】返却登録しますか？</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <label>レンタル者：  {{ $rentaled_book_status->user->name }} 様</label><br>
-                                                <label>返却期日：  {{ $rentaled_book_status->rental_start_datetime->addDays(7)->isoFormat('YYYY年MM月DD(ddd)') }}</label>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-                                                <button type="submit" class="btn btn-primary">返却登録する</button>
-                                        </form>
-                                        </div>
-                                    </div>
-                                </div>
-
+                            {{-- 本の返却登録 --}}
+                            @include('admin.modal.book_return')
                         @endforeach
                         </tbody>
                     </table>
@@ -157,66 +138,6 @@
             console.log(error.statusText)
         })
     });
-    //戻るボタンで戻ってきた際、強制リロード
-    window.addEventListener('pageshow',()=>{
-	    if(window.performance.navigation.type==2) location.reload();
-    });
-
-    // $('#search_clear').on('click', function () {
-    //     search_word = "";
-    //     category_id =  "";
-    //     rental_status = 1;
-    //     $.ajax(
-    //     {
-    //         url: "/",
-    //         type: "GET",
-    //         data: {
-    //             "search_word": search_word,
-    //             "category_id": category_id,
-    //             "rental_status": rental_status,
-    //         },
-    //         dataType: 'json',
-    //     })
-    //     //通信が成功したとき
-    //     .done((res)=>{
-    //         console.log(res.message)
-    //     })
-    //     //通信が失敗したとき
-    //     .fail((error)=>{
-    //         console.log(error.statusText)
-    //     })
-    // });
-
-
-    // var input_name = document.getElementById("search_word");
-    // input_name.addEventListener("input",function(){
-    //     const search_word = document.getElementsByName('search_word')[0].value;
-    //     const category_id = document.getElementsByName('category_id')[0].value;
-    //     const rental_status = document.getElementsByName('rental_status')[0].value;
-    //     console.log(search_word);
-    //     $.ajax(
-    //     {
-    //         url: "/",
-    //         type: "GET",
-    //         data: {
-    //             "search_word": search_word,
-    //             "category_id": category_id,
-    //             "rental_status": rental_status,
-    //         },
-    //         dataType: 'json',
-    //     })
-    //     //通信が成功したとき
-    //     .done((res)=>{
-    //         console.log(res.message)
-    //     })
-    //     //通信が失敗したとき
-    //     .fail((error)=>{
-    //         console.log(error.statusText)
-    //     })
-    // });
-
-
-
 </script>
 
 

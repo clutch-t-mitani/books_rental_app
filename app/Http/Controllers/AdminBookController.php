@@ -34,6 +34,35 @@ class AdminBookController extends Controller
         return view('admin.book',compact('categories','search_word','category_id','books','book_categories'));
     }
 
+    public function create(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $book = new Book();
+            $book->name = $request->name;
+            $book->author = $request->author;
+            $book->save();
+
+
+           if (isset($request->categories_id)) {
+                foreach ($request->categories_id as $category_id) {
+                    $book_category = new BookCategory();
+                    $book_category->book_id = $book->id;
+                    $book_category->category_id = $category_id;
+                    $book_category->save();
+                }
+            }
+
+            DB::commit();
+            session()->flash('msg_success', '登録に成功しました');
+            return redirect('/admin/books');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            session()->flash('msg_danger', '登録に失敗しました。');
+            return redirect('/admin/books');
+        }
+    }
+
     public function update(Request $request)
     {
         try {
@@ -46,10 +75,10 @@ class AdminBookController extends Controller
            BookCategory::where('book_id',$request->id)->delete();
 
            if (isset($request->categories_id)) {
-                foreach ($request->categories_id as $category) {
+                foreach ($request->categories_id as $category_id) {
                     $book_category = new BookCategory();
                     $book_category->book_id = $request->id;
-                    $book_category->category_id = $category;
+                    $book_category->category_id = $category_id;
                     $book_category->save();
                 }
             }

@@ -48,7 +48,6 @@
                                         </div>
                                         <div class="col-auto">
                                             <button type="submit" class="btn btn-primary" id="search_button">絞り込み</button>
-                                            {{-- <button type="submit" class="btn btn-link" id="search_clear">クリア</button> --}}
                                             <a href="/">クリア</a>
                                         </div>
                                 </div>
@@ -92,26 +91,8 @@
                                     @endif
                                 </td>
                             </tr>
-                            <div class="modal fade" id="rentalButtton{{ $book->id }}" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <form action="{{ route('cart.add') }}" method="post">
-                                            @csrf
-                                            <input type="hidden" name="book_id" value="{{ $book->id }}" >
-                                            <div class="modal-header">
-                                                <h4 class="modal-title" id="myModalLabel">【{{ $book->name }}】レンタルしますか？</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <label>返却期日 ：{{ now()->addDays(7)->isoFormat('YYYY年MM月DD(ddd)') }}</label>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-                                                <button type="submit" class="btn btn-primary">カートに入れる</button>
-                                        </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {{-- 借りるボタンのモーダル --}}
+                            @include('modal.rental_book')
                         @endforeach
                         </tbody>
                     </table>
@@ -152,62 +133,6 @@
     window.addEventListener('pageshow',()=>{
 	    if(window.performance.navigation.type==2) location.reload();
     });
-
-    // $('#search_clear').on('click', function () {
-    //     search_word = "";
-    //     category_id =  "";
-    //     rental_status = 1;
-    //     $.ajax(
-    //     {
-    //         url: "/",
-    //         type: "GET",
-    //         data: {
-    //             "search_word": search_word,
-    //             "category_id": category_id,
-    //             "rental_status": rental_status,
-    //         },
-    //         dataType: 'json',
-    //     })
-    //     //通信が成功したとき
-    //     .done((res)=>{
-    //         console.log(res.message)
-    //     })
-    //     //通信が失敗したとき
-    //     .fail((error)=>{
-    //         console.log(error.statusText)
-    //     })
-    // });
-
-
-    // var input_name = document.getElementById("search_word");
-    // input_name.addEventListener("input",function(){
-    //     const search_word = document.getElementsByName('search_word')[0].value;
-    //     const category_id = document.getElementsByName('category_id')[0].value;
-    //     const rental_status = document.getElementsByName('rental_status')[0].value;
-    //     console.log(search_word);
-    //     $.ajax(
-    //     {
-    //         url: "/",
-    //         type: "GET",
-    //         data: {
-    //             "search_word": search_word,
-    //             "category_id": category_id,
-    //             "rental_status": rental_status,
-    //         },
-    //         dataType: 'json',
-    //     })
-    //     //通信が成功したとき
-    //     .done((res)=>{
-    //         console.log(res.message)
-    //     })
-    //     //通信が失敗したとき
-    //     .fail((error)=>{
-    //         console.log(error.statusText)
-    //     })
-    // });
-
-
-
 </script>
 
 

@@ -41,6 +41,9 @@
                             </form>
                         </div>
                     </div>
+                    <button type="submit" class="btn btn-success" style="margin-bottom: 10px"  data-toggle="modal" data-target="#create_book">本の新規登録</button>
+                    {{-- 本の新規登録 --}}
+                    @include('admin.modal.book_create')
                     <table id="table1" class="table table-bordered">
                         <thead>
                             <tr>
@@ -72,69 +75,10 @@
                                     @endif
                                 </td>
                             </tr>
-                                {{-- 本の編集 --}}
-                                <div class="modal fade" id="edit{{ $book->id  }}" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <form action="{{ route('admin.book.update') }}" method="post">
-                                                @csrf
-                                                <input type="hidden" name="id" value="{{ $book->id }}" >
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title" id="myModalLabel">本の内容を編集</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <label>タイトル</label>
-                                                    <input type="text" class="form-control" name="name" value="{{ $book->name }}" placeholder="タイトルを入力してください" required>
-                                                    <br>
-                                                    <label>作者</label>
-                                                    <input type="text" class="form-control" name="author" value="{{ $book->author }}" placeholder="作者を入力してください" required>
-                                                    <br>
-                                                    <label>カテゴリ</label>
-                                                    @php
-                                                        $subject_book_categories = [];
-                                                        foreach ($book_categories as $book_category) {
-                                                            if ($book_category->book_id == $book->id) {
-                                                                array_push($subject_book_categories, $book_category->category_id);
-                                                            }
-                                                        }
-                                                    @endphp
-                                                    <select name="categories_id[]" class="form-control" multiple>
-                                                        @foreach($categories as $category)
-                                                            <option value="{{ $category->id }}" @if(in_array($category->id,$subject_book_categories))selected @endif>
-                                                                {{ $category->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-                                                    <button type="submit" class="btn btn-primary">編集する</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                {{-- 本の削除 --}}
-                                <div class="modal fade" id="delete{{ $book->id }}" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <form action="{{ route('admin.book.delete') }}" method="post">
-                                                @csrf
-                                                <input type="hidden" name="id" value="{{ $book->id }}" >
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title" id="myModalLabel">【{{ $book->name }}】を削除しますか？</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <label for="" style="color:red"><i class="fas fa-exclamation-triangle"></i>一度削除すると復元できません。</label>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-                                                    <button type="submit" class="btn btn-danger">削除する</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+                            {{-- 本の編集 --}}
+                            @include('admin.modal.book_edit')
+                            {{-- 本の削除 --}}
+                            @include('admin.modal.book_delete')
                         @endforeach
                         </tbody>
                     </table>
@@ -150,7 +94,6 @@
     $('#search_button').on('click', function () {
         const search_word = document.getElementsByName('search_word')[0].value;
         const category_id = document.getElementsByName('category_id')[0].value;
-        const rental_status = document.getElementsByName('rental_status')[0].value;
         $.ajax(
         {
             url: "/",
@@ -158,7 +101,6 @@
             data: {
                 "search_word": search_word,
                 "category_id": category_id,
-                "rental_status": rental_status,
             },
             dataType: 'json',
         })
@@ -171,66 +113,6 @@
             console.log(error.statusText)
         })
     });
-    //戻るボタンで戻ってきた際、強制リロード
-    window.addEventListener('pageshow',()=>{
-	    if(window.performance.navigation.type==2) location.reload();
-    });
-
-    // $('#search_clear').on('click', function () {
-    //     search_word = "";
-    //     category_id =  "";
-    //     rental_status = 1;
-    //     $.ajax(
-    //     {
-    //         url: "/",
-    //         type: "GET",
-    //         data: {
-    //             "search_word": search_word,
-    //             "category_id": category_id,
-    //             "rental_status": rental_status,
-    //         },
-    //         dataType: 'json',
-    //     })
-    //     //通信が成功したとき
-    //     .done((res)=>{
-    //         console.log(res.message)
-    //     })
-    //     //通信が失敗したとき
-    //     .fail((error)=>{
-    //         console.log(error.statusText)
-    //     })
-    // });
-
-
-    // var input_name = document.getElementById("search_word");
-    // input_name.addEventListener("input",function(){
-    //     const search_word = document.getElementsByName('search_word')[0].value;
-    //     const category_id = document.getElementsByName('category_id')[0].value;
-    //     const rental_status = document.getElementsByName('rental_status')[0].value;
-    //     console.log(search_word);
-    //     $.ajax(
-    //     {
-    //         url: "/",
-    //         type: "GET",
-    //         data: {
-    //             "search_word": search_word,
-    //             "category_id": category_id,
-    //             "rental_status": rental_status,
-    //         },
-    //         dataType: 'json',
-    //     })
-    //     //通信が成功したとき
-    //     .done((res)=>{
-    //         console.log(res.message)
-    //     })
-    //     //通信が失敗したとき
-    //     .fail((error)=>{
-    //         console.log(error.statusText)
-    //     })
-    // });
-
-
-
 </script>
 
 
