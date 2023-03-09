@@ -18,10 +18,10 @@ class Book extends Model
         'author',
     ];
 
-    // public function categories()
-    // {
-    //     return $this->belongsToMany('App\Models\Category');
-    // }
+    public function categories()
+    {
+        return $this->belongsToMany('App\Models\Category');
+    }
 
     //中間テーブルとつなぐ
     public function rental_statuses()
