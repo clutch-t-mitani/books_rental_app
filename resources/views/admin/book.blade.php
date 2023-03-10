@@ -41,9 +41,14 @@
                             </form>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-success" style="margin-bottom: 10px"  data-toggle="modal" data-target="#create_book">本の新規登録</button>
+                    <button type="submit" class="btn btn-outline-primary" style="margin-bottom: 10px"  data-toggle="modal" data-target="#create_book">本の新規登録</button>
                     {{-- 本の新規登録 --}}
                     @include('admin.modal.book_create')
+
+                    <button type="submit" class="btn btn-outline-success" style="margin-bottom: 10px"  data-toggle="modal" data-target="#edit_categories">カテゴリ編集</button>
+                    {{-- カテゴリの編集 --}}
+                    @include('admin.modal.edit_categories')
+
                     <table id="table1" class="table table-bordered">
                         <thead>
                             <tr>

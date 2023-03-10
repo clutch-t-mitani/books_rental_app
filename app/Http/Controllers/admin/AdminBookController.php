@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Book;
@@ -106,6 +107,28 @@ class AdminBookController extends Controller
         } catch (\Throwable $e) {
             DB::rollBack();
             session()->flash('msg_danger', '削除に失敗しました。');
+            return redirect('/admin/books');
+        }
+    }
+
+    public function category_update(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            if ($request->category_action == 'edit') {
+                $category = Category::findOrFail($request->category_id);
+                $category->name = $request->name;
+                $category->save();
+
+                BookCategory::where('book_id',$request->id)->delete();
+            }
+
+            DB::commit();
+            session()->flash('msg_success', '編集に成功しました');
+            return redirect('/admin/books');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            session()->flash('msg_danger', '編集に失敗しました。');
             return redirect('/admin/books');
         }
     }
