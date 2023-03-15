@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\admin\AdminRentalBookController;
 use App\Http\Controllers\admin\AdminBookController;
+use App\Http\Controllers\admin\AdminCategoryController;
 
 
 /*
@@ -41,7 +42,8 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::post('/rental_books', [AdminRentalBookController::class, 'update'])->name('update');
     Route::get('/books', [AdminBookController::class, 'index'])->name('book');
     Route::post('/books', [AdminBookController::class, 'update'])->name('book.update');
-    Route::post('/categories', [AdminBookController::class, 'category_update'])->name('category.update');
+    Route::post('/categories/store', [AdminCategoryController::class, 'store'])->name('category.store');
+    Route::post('/categories', [AdminCategoryController::class, 'update'])->name('category.update');
     Route::post('/books/create', [AdminBookController::class, 'create'])->name('book.create');
     Route::post('/books/delete', [AdminBookController::class, 'delete'])->name('book.delete');
 });
