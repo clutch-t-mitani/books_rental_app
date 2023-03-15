@@ -9,6 +9,7 @@
                     <div style="display: inline-block; color:white">本在庫一覧</div>
                     @if( Auth::check() )
                         <div style="display: inline-block; ">
+                            <a href="{{ route('admin.index') }}" class="link"><i class="fa fa-pen"z></i>レンタル管理ページへ</a><br>
                         </div>
                     @endif
                 </div>
@@ -122,11 +123,11 @@
 
 
 <style>
-.user-link{
+.link{
     color: white;
 
 }
-.user-link:hover{
+.link:hover{
     text-decoration: underline;
     color: white;
 }

@@ -9,8 +9,8 @@
                     <div style="display: inline-block;">レンタル商品一覧</div>
                     @if( Auth::check() )
                         <div style="display: inline-block; ">
-                            <a href="{{ url('/mypage') }}" class="user-link"><i class="fas fa-user"></i> マイページへ</a><br>
-                            <a href="{{ url('/cart') }}" class="user-link"><i class="fas fa-shopping-cart"></i> カートへ （現在{{ count($in_cart_books) }} 冊）</a>
+                            <a href="{{ route('user.mypage') }}" class="user-link"><i class="fas fa-user"></i> マイページへ</a><br>
+                            <a href="{{ route('cart.index') }}" class="user-link"><i class="fas fa-shopping-cart"></i> カートへ （現在{{ count($in_cart_books) }} 冊）</a>
                         </div>
                     @endif
                 </div>
