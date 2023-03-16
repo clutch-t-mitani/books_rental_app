@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-17">
             <div class="card">
-                <div class="card-header" style="background-color: #00FF00; display: flex; justify-content: space-between;">
+                <div class="card-header" style="background-color:red; color: white; display: flex; justify-content: space-between;">
                     <div style="display: inline-block;">レンタル済み商品一覧</div>
                     @if( Auth::check() )
                         <div style="display: inline-block; ">
@@ -144,12 +144,12 @@
 
 <style>
 .link{
-    color: black;
+    color: white;
 
 }
 .link:hover{
     text-decoration: underline;
-    color: black;
+    color: white;
 }
 </style>
 @endsection

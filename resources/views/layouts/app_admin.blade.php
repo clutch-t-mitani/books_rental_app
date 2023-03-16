@@ -32,10 +32,10 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/admin/rental_books') }}">
-                    {{-- {{ config('app.name', 'Laravel') }} --}}
-                    管理者ページ
+                <a class="navbar-brand" href="{{ route('admin.index') }}" style="color:red">
+                    BooksRentalApp(管理者用)
                 </a>
+                <a href="{{ route('books.index') }}" style="margin-left:30px; margin-right:30px; font-size:80%; color:black;">ユーザ用ページはこちら ▼</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -51,13 +51,13 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link" href="{{ url('admin/login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ url('admin/register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else
