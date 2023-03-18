@@ -30,6 +30,9 @@ class LogSuccessfulLogin
     {
         //期日超えの本を取得
         $is_overdate_book = RentalStatus::IsOverReturnDate()->UserId($event->user->id)->get();
-        session([ 'is_overdate_book' => $is_overdate_book ]);
+
+        if ($is_overdate_book->isNotEmpty()) {
+            session([ 'is_overdate_book' => $is_overdate_book ]);
+        }
     }
 }
