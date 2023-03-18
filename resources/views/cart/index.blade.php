@@ -9,41 +9,39 @@
                     <div style="display: inline-block;"><i class="fas fa-shopping-cart"></i>カート</div>
                 </div>
                 <div class="card-body">
-                <div style="float: left;">
-                        <table class="table">
-                            <thead>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: %">No</th>
+                                <th style="width: %">カテゴリー</th>
+                                <th style="width: %">タイトル</th>
+                                <th style="width: %">作者</th>
+                                <th style="width: %"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($in_cart_books as $key => $book)
+                                <form action="{{ route('cart.delete') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="book_id" value="{{ $book->id }}">
                                 <tr>
-                                    <th style="width: %">No</th>
-                                    <th style="width: %">カテゴリー</th>
-                                    <th style="width: %">タイトル</th>
-                                    <th style="width: %">作者</th>
-                                    <th style="width: %"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($in_cart_books as $key => $book)
-                                    <form action="{{ route('cart.delete') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="book_id" value="{{ $book->id }}">
-                                    <tr>
-                                        <td>{{ $key+1 }}</td>
-                                        <td>
-                                            @foreach ($book->book_categories as $category)
-                                                {{ $category->category->name }}<br>
-                                            @endforeach
-                                         </td>
-                                        <td>{{ $book->name }}</td>
-                                        <td>{{ $book->author }}</td>
-                                        <td>
-                                            <button type="submit" class="btn btn-link" onClick="delete_alert(event);return false;"><i class="fas fa-trash-alt"></i></button>
+                                    <td>{{ $key+1 }}</td>
+                                    <td>
+                                        @foreach ($book->book_categories as $category)
+                                            {{ $category->category->name }}<br>
+                                        @endforeach
                                         </td>
-                                    </tr>
-                                    </form>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="card" style="width:30em; float: right; text-align: center;">
+                                    <td>{{ $book->name }}</td>
+                                    <td>{{ $book->author }}</td>
+                                    <td>
+                                        <button type="submit" class="btn btn-link" onClick="delete_alert(event);return false;"><i class="fas fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                                </form>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <div class="card" style="text-align: center;">
                         <form action="{{ route('cart.store') }}" method="POST">
                         @csrf
                             @foreach ($in_cart_books as $book)

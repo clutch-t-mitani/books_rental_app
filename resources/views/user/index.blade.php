@@ -9,10 +9,25 @@
                     <div style="display: inline-block;"><i class="fas fa-user"></i>マイページ</div>
                 </div>
                 <div class="card-body">
-                <div style="float: left;">
+                    <div class="card" style="text-align: center;">
+                        <ul class="list-group list-group-flush">
+                            @if ($over_date_books->isNotEmpty())
+                                <li class="list-group-item" style="color:red">
+                                    <i class="fas fa-exclamation-triangle"></i>返却期日超えの本が{{ count($over_date_books) }}冊あります<i class="fas fa-exclamation-triangle"></i>
+                                </li>
+                            @endif
+                            <li class="list-group-item">お名前：{{ $user->name }}様</li>
+                            <li class="list-group-item">レンタル中：{{ count($rental_statues) }}冊</li>
+                            <li class="list-group-item">
+                                <button type="button" class="btn btn-outline-secondary" style="width:80%" onclick="location.href = '{{ url('/') }}'">商品一覧へ戻る</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <br>
+                    <div class="card" style="text-align: center;">
                         <div style="margin-bottom: 5px">レンタル中商品</div>
-                        <table class="table">
-                            <thead>
+                        <table class="table table-bordered">
+                            <thead >
                                 <tr>
                                     <th style="width: %">カテゴリー</th>
                                     <th style="width: %">タイトル</th>
@@ -35,20 +50,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
-                    <div class="card" style="width:30em; float: right; text-align: center; margin-top: 30px">
-                        <ul class="list-group list-group-flush">
-                            @if ($over_date_books->isNotEmpty())
-                                <li class="list-group-item" style="color:red">
-                                    <i class="fas fa-exclamation-triangle"></i>返却期日超えの本が{{ count($over_date_books) }}冊あります<i class="fas fa-exclamation-triangle"></i>
-                                </li>
-                            @endif
-                            <li class="list-group-item">お名前：{{ $user->name }}様</li>
-                            <li class="list-group-item">レンタル中：{{ count($rental_statues) }}冊</li>
-                            <li class="list-group-item">
-                                <button type="button" class="btn btn-outline-secondary" style="width:80%" onclick="location.href = '{{ url('/') }}'">商品一覧へ戻る</button>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
