@@ -143,6 +143,7 @@
 
     //返却期日超えの本があればログイン時アラートを出す。
     var is_overdate_book = @json($is_overdate_book);
+    console.log(is_overdate_book);
     if(is_overdate_book) {
         alert('返却期日を超過している本があります。\n\nマイページで詳細を確認してください。');
     }
