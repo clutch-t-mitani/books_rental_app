@@ -3,6 +3,13 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
+        @php
+            //返却期日超えの本があるか確認
+            $is_overdate_book = false;
+            if (Session::pull('is_overdate_book')) {
+                $is_overdate_book = true;
+            }
+        @endphp
         <div class="col-md-17">
             <div class="card">
                 <div class="card-header" style="background-color: #000066; color: white; display: flex; justify-content: space-between;">
@@ -133,6 +140,13 @@
     window.addEventListener('pageshow',()=>{
 	    if(window.performance.navigation.type==2) location.reload();
     });
+
+    //返却期日超えの本があればログイン時アラートを出す。
+    var is_overdate_book = @json($is_overdate_book);
+    if(is_overdate_book) {
+        alert('返却期日を超過している本があります。\n\nマイページで詳細を確認してください。');
+    }
+
 </script>
 
 
