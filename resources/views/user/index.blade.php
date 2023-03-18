@@ -38,9 +38,9 @@
                     </div>
                     <div class="card" style="width:30em; float: right; text-align: center; margin-top: 30px">
                         <ul class="list-group list-group-flush">
-                            @if ($due_return_date->isNotEmpty())
+                            @if ($over_date_books->isNotEmpty())
                                 <li class="list-group-item" style="color:red">
-                                    <i class="fas fa-exclamation-triangle"></i>返却期日超えの本が{{ count($due_return_date) }}冊あります<i class="fas fa-exclamation-triangle"></i>
+                                    <i class="fas fa-exclamation-triangle"></i>返却期日超えの本が{{ count($over_date_books) }}冊あります<i class="fas fa-exclamation-triangle"></i>
                                 </li>
                             @endif
                             <li class="list-group-item">お名前：{{ $user->name }}様</li>

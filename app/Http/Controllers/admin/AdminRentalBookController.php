@@ -47,9 +47,9 @@ class AdminRentalBookController extends Controller
         }
 
         $rentaled_book_statues = $query->orderBy('rental_start_datetime', 'desc')->paginate(10);
-        $due_return_date = RentalStatus::IsOverReturnDate()->get();
+        $over_date_books = RentalStatus::IsOverReturnDate()->get();
 
-        return view('admin.index',compact('categories','search_word','category_id','rental_status','rentaled_book_statues','due_return_date'));
+        return view('admin.index',compact('categories','search_word','category_id','rental_status','rentaled_book_statues','over_date_books'));
     }
 
     public function update(Request $request)

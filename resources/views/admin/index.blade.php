@@ -62,9 +62,9 @@
                             </form>
                         </div>
                     </div>
-                    @if ($due_return_date->isNotEmpty())
+                    @if ($over_date_books->isNotEmpty())
                         <div style="color:red">
-                            <i class="fas fa-exclamation-triangle"></i>返却期日超えの本が{{ count($due_return_date)}}冊あります<i class="fas fa-exclamation-triangle"></i>
+                            <i class="fas fa-exclamation-triangle"></i>返却期日超えの本が{{ count($over_date_books)}}冊あります<i class="fas fa-exclamation-triangle"></i>
                         </div>
                     @endif
                     <table id="table1" class="table table-bordered">
@@ -80,7 +80,7 @@
                         </thead>
                         <tbody>
                         @foreach ($rentaled_book_statues as $rentaled_book_status)
-                            <tr style="{{ $due_return_date->whereIn('id',$rentaled_book_status->id)->isNotEmpty()? "color: red;": "" }}">
+                            <tr style="{{ $over_date_books->whereIn('id',$rentaled_book_status->id)->isNotEmpty()? "color: red;": "" }}">
                                 <td>{{ $rentaled_book_status->user->name  }}</td>
                                 <td>
                                     @foreach ($rentaled_book_status->book->book_categories as $book_category)

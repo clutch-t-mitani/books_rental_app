@@ -39,13 +39,11 @@ class RentalStatus extends Model
     public function scopeIsOverReturnDate(Builder $query)
     {
         return $query->whereNull('return_datetime')->where('rental_statuses.rental_start_datetime', '<' ,now()->subDay(8));
-      //   $due_return_date = $rental_statues->where('rental_start_datetime', '<' ,now()->subDay(8));
     }
 
     public function scopeUserId(Builder $query ,$user_id)
     {
         return $query->where('rental_statuses.user_id', $user_id);
-      //   $due_return_date = $rental_statues->where('rental_start_datetime', '<' ,now()->subDay(8));
     }
 
 

@@ -45,10 +45,7 @@ class BookController extends Controller
 
         $books = $query->paginate(10);
 
-        //ログインユーザの返却期日超えのステータスの確認
-        $due_return_date = RentalStatus::where('user_id','=',Auth::id())->whereNull('return_datetime')->where('rental_start_datetime', '<' ,now()->subDay(8))->get();
-
-        return view('books.index',compact('books','categories','search_word','rental_status','category_id','in_cart_books','due_return_date'));
+        return view('books.index',compact('books','categories','search_word','rental_status','category_id','in_cart_books'));
     }
 
     public static function escapeLike($str)
