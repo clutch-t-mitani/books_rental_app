@@ -11,7 +11,8 @@ use App\Models\Category;
 use App\Models\BookCategory;
 use App\Models\RentalStatus;
 use GuzzleHttp\Client;
-
+use App\Http\Requests\CartRequest;
+use App\Http\Requests\RentalBookRequest;
 
 class CartController extends Controller
 {
@@ -32,7 +33,7 @@ class CartController extends Controller
     }
 
     //カートに追加
-    public function add(Request $request)
+    public function add(CartRequest $request)
     {
         $book_id = $request->book_id;
         $book = Book::findOrFail($book_id);
@@ -40,13 +41,11 @@ class CartController extends Controller
         try {
             DB::beginTransaction();
             if ($book->is_rentable) {
-
                 $session_data = [];
                 $session_data = compact('book_id');
                 $request->session()->push('session_data', $session_data);
             } else {
-                session()->flash('msg_danger', 'カートに追加できませんでした');
-                return redirect('/');
+                throw new \Exception();
             }
             DB::commit();
             session()->flash('msg_success', 'カートに追加しました');
@@ -59,7 +58,7 @@ class CartController extends Controller
     }
 
     //カートから削除
-    public function delete(Request $request)
+    public function delete(CartRequest $request)
     {
         $sessinon_datas = $request->session()->get('session_data');
 
@@ -75,7 +74,7 @@ class CartController extends Controller
     }
 
     //レンタルする
-    public function store(Request $request)
+    public function store(RentalBookRequest $request)
     {
         $rental_books = $request->book_id;
 

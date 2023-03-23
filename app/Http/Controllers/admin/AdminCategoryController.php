@@ -9,10 +9,12 @@ use App\Models\Book;
 use App\Models\Category;
 use App\Models\BookCategory;
 use App\Models\RentalStatus;
+use App\Http\Requests\CategoryRequest;
+
 
 class AdminCategoryController extends Controller
 {
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         $category = new Category();
         $category->name = $request->name;
@@ -22,7 +24,7 @@ class AdminCategoryController extends Controller
         return redirect('/admin/books');
     }
 
-    public function update(Request $request)
+    public function update(CategoryRequest $request)
     {
         try {
             DB::beginTransaction();

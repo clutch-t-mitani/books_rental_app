@@ -9,10 +9,11 @@ use App\Models\Book;
 use App\Models\Category;
 use App\Models\BookCategory;
 use App\Models\RentalStatus;
+use App\Http\Requests\BookSearchRequest;
 
 class AdminRentalBookController extends Controller
 {
-    public function index(Request $request)
+    public function index(BookSearchRequest $request)
     {
         $categories = Category::get();
         $search_word = $request->search_word; //本の名前
@@ -20,17 +21,19 @@ class AdminRentalBookController extends Controller
         $rental_status = $request->rental_status; //レンタル状況
 
         $query = RentalStatus::query();
-        if (isset($search_word)) {
-            $query->whereHas('book', function($q) use($search_word)  {
-                $q->where('books.name', 'like', '%' . self::escapeLike($search_word) . '%');
-            })->orWhereHas('book', function($q) use($search_word)  {
-                $q->where('books.author', 'like', '%' . self::escapeLike($search_word) . '%');
-            })->orWhereHas('user', function($q) use($search_word)  {
-                $q->where('users.name', 'like', '%' . self::escapeLike($search_word) . '%');
+        if ($search_word) {
+            $query->where(function ($qry) use($search_word) {
+                $qry->whereHas('book', function($q) use($search_word)  {
+                    $q->where('books.name', 'like', '%' . self::escapeLike($search_word) . '%');
+                })->orWhereHas('book', function($q) use($search_word)  {
+                    $q->where('books.author', 'like', '%' . self::escapeLike($search_word) . '%');
+                })->orWhereHas('user', function($q) use($search_word)  {
+                    $q->where('users.name', 'like', '%' . self::escapeLike($search_word) . '%');
+                });
             });
         }
 
-        if (isset($category_id)) {
+        if ($category_id) {
             $query->whereHas('book', function($q) use($category_id)  {
                 $q->whereHas('book_categories', function($q) use($category_id){
                     $q->where('book_category.category_id', $category_id);
@@ -49,9 +52,16 @@ class AdminRentalBookController extends Controller
         $rentaled_book_statues = $query->orderBy('rental_start_datetime', 'desc')->paginate(10);
         $over_date_books = RentalStatus::IsOverReturnDate()->get();
 
-        return view('admin.index',compact('categories','search_word','category_id','rental_status','rentaled_book_statues','over_date_books'));
+        return view('admin.index',[
+                'pagenate_params' => [
+                    'search_word' => $search_word,
+                    'category_id' => $category_id,
+                    'rental_status' => $rental_status,
+                ],
+            ],compact('categories','search_word','category_id','rental_status','rentaled_book_statues','over_date_books'));
     }
 
+    //返却登録
     public function update(Request $request)
     {
         try {
@@ -60,6 +70,11 @@ class AdminRentalBookController extends Controller
             $returned_book = Book::findOrFail($rental_status->book_id);
             $rental_status->return_datetime = now();
             $rental_status->save();
+
+            if ($returned_book->is_rentable) {
+                throw new \Exception();
+            }
+
             $returned_book->is_rentable = true;
             $returned_book->save();
 

@@ -9,10 +9,12 @@ use App\Models\Book;
 use App\Models\Category;
 use App\Models\BookCategory;
 use App\Models\RentalStatus;
+use App\Http\Requests\BookSearchRequest;
+use App\Http\Requests\RegisterBookRequest;
 
 class AdminBookController extends Controller
 {
-    public function index(Request $request)
+    public function index(BookSearchRequest $request)
     {
         $categories = Category::get();
         $book_categories = BookCategory::get();
@@ -20,11 +22,13 @@ class AdminBookController extends Controller
         $category_id = $request->category_id; //カテゴリー
 
         $query = Book::query();
-        if (isset($search_word)) {
-            $query->where('name', 'like', '%' . self::escapeLike($search_word) . '%')->orWhere('author', 'like', '%' . self::escapeLike($search_word) . '%');
+        if ($search_word) {
+            $query->where(function ($qry) use($search_word) {
+                $qry->where('name', 'like', '%' . self::escapeLike($search_word) . '%')->orWhere('author', 'like', '%' . self::escapeLike($search_word) . '%');
+            });
         }
 
-        if (isset($category_id)) {
+        if ($category_id) {
             $query->whereHas('book_categories', function($q) use($category_id)  {
                 $q->where('book_category.category_id', $category_id);
             });
@@ -32,10 +36,15 @@ class AdminBookController extends Controller
 
         $books = $query->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('admin.book',compact('categories','search_word','category_id','books','book_categories'));
+        return view('admin.book',[
+            'pagenate_params' => [
+                'search_word' => $search_word,
+                'category_id' => $category_id,
+            ],
+        ],compact('categories','search_word','category_id','books','book_categories'));
     }
 
-    public function create(Request $request)
+    public function create(RegisterBookRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -64,7 +73,7 @@ class AdminBookController extends Controller
         }
     }
 
-    public function update(Request $request)
+    public function update(RegisterBookRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -98,9 +107,13 @@ class AdminBookController extends Controller
     {
         try {
             DB::beginTransaction();
-            Book::where('id',$request->id)->delete();
-            BookCategory::where('book_id',$request->id)->delete();
-
+            $book = Book::where('id',$request->id);
+            if ($book->is_rentable) {
+                Book::where('id',$request->id)->delete();
+                BookCategory::where('book_id',$request->id)->delete();
+            } else {
+                throw new \Exception();
+            }
             DB::commit();
             session()->flash('msg_success', '削除しました。');
             return redirect('/admin/books');

@@ -26,7 +26,7 @@
                                     <label class="col-1" style="font-size: 0.95em;">商品<br>カテゴリ</label>
                                     <div class="col-3">
                                         <select name="category_id" class="form-control">
-                                            <option value="">未選択</option>
+                                            <option value="0">未選択</option>
                                             @foreach($categories as $category)
                                                 <option value="{{ $category->id }}" @if($category->id == $category_id) selected @endif>
                                                     {{ $category->name }}
@@ -89,7 +89,7 @@
                         </tbody>
                     </table>
                     <div class="mt-4">
-                        {{ $books->render() }}
+                        {{ $books->appends($pagenate_params)->links() }}
                     </div>
                 </div>
             </div>

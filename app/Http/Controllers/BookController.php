@@ -9,10 +9,11 @@ use App\Models\Book;
 use App\Models\Category;
 use App\Models\BookCategory;
 use App\Models\RentalStatus;
+use App\Http\Requests\BookSearchRequest;
 
 class BookController extends Controller
 {
-    public function index(Request $request)
+    public function index(BookSearchRequest $request)
     {
         $session_data = [];
         $session_data = $request->session()->get('session_data');
@@ -29,11 +30,13 @@ class BookController extends Controller
         $rental_status = $request->rental_status; //レンタル状況
 
         $query = Book::query();
-        if (isset($search_word)) {
-            $query->where('name', 'like', '%' . self::escapeLike($search_word) . '%')->orWhere('author', 'like', '%' . self::escapeLike($search_word) . '%');
+        if ($search_word) {
+            $query->where(function ($qry) use($search_word) {
+                $qry->where('name', 'like', '%' . self::escapeLike($search_word) . '%')->orWhere('author', 'like', '%' . self::escapeLike($search_word) . '%');
+            });
         }
 
-        if (isset($category_id)) {
+        if ($category_id) {
             $query->whereHas('book_categories', function($q) use($category_id)  {
                 $q->where('book_category.category_id', $category_id);
             });
@@ -45,7 +48,13 @@ class BookController extends Controller
 
         $books = $query->paginate(10);
 
-        return view('books.index',compact('books','categories','search_word','rental_status','category_id','in_cart_books'));
+        return view('books.index',[
+            'pagenate_params' => [
+                'search_word' => $search_word,
+                'category_id' => $category_id,
+                'rental_status' => $rental_status,
+            ],
+        ],compact('books','categories','search_word','rental_status','category_id','in_cart_books'));
     }
 
     public static function escapeLike($str)

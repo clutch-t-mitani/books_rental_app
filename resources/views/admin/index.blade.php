@@ -37,7 +37,7 @@
                                     <label class="col-1" style="font-size: 0.95em;">商品<br>カテゴリ</label>
                                         <div class="col-3">
                                             <select name="category_id" class="form-control">
-                                                <option value="">未選択</option>
+                                                <option value="0">未選択</option>
                                                 @foreach($categories as $category)
                                                     <option value="{{ $category->id }}" @if($category->id == $category_id) selected @endif>
                                                         {{ $category->name }}
@@ -48,7 +48,7 @@
                                         <label class="col-1" style="font-size: 0.95em;">レンタル状況</label>
                                         <div class="col-3">
                                             <select name="rental_status" class="form-control" value="" >
-                                                <option value="" >全て</option>
+                                                <option value="0" >全て</option>
                                                 <option value="2" @if($rental_status==2) selected @endif>レンタル中</option>
                                                 <option value="3" @if($rental_status==3) selected @endif>返却済</option>
                                                 <option value="4" @if($rental_status==4) selected @endif>返却期日超え</option>
@@ -107,7 +107,7 @@
                         </tbody>
                     </table>
                     <div class="mt-4">
-                        {{ $rentaled_book_statues->render() }}
+                        {{ $rentaled_book_statues->appends($pagenate_params)->links() }}
                     </div>
                 </div>
             </div>
