@@ -48,10 +48,11 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::post('/books/delete', [AdminBookController::class, 'delete'])->name('book.delete');
 });
 
+Route::prefix('admin')->group(function() {
+    Route::view('/login', 'admin/login');
+    Route::post('/login', [LoginController::class, 'login']);
+    Route::post('/logout', [LoginController::class,'logout']);
+    Route::view('/register', 'admin/register');
+    Route::post('/register', [RegisterController::class, 'register']);
+});
 
-Route::view('/admin/login', 'admin/login');
-Route::post('/admin/login', [LoginController::class, 'login']);
-Route::post('admin/logout', [LoginController::class,'logout']);
-Route::view('/admin/register', 'admin/register');
-Route::post('/admin/register', [RegisterController::class, 'register']);
-Route::view('/admin/home', 'admin/home')->middleware('auth:admin');

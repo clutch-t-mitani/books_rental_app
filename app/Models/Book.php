@@ -18,15 +18,9 @@ class Book extends Model
         'author',
     ];
 
-    public function categories()
-    {
-        return $this->belongsToMany('App\Models\Category');
-    }
-
     //中間テーブルとつなぐ
     public function rental_statuses()
     {
-        // return $this->hasMany('App\Models\RentalStatus');
         return $this->hasMany('App\Models\RentalStatus');
     }
 

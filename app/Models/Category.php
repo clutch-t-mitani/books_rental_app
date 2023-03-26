@@ -15,7 +15,6 @@ class Category extends Model
         'name',
     ];
 
-
     //中間テーブルとつなぐ
     public function book_categories()
     {
