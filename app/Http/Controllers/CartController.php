@@ -108,7 +108,7 @@ class CartController extends Controller
             DB::commit();
         }
 
-        if (!empty($success_rental_books)) {
+        if ($success_rental_books) {
             $success_books = implode("、", $success_rental_books);
             $succes_message = $success_books.'をレンタルしました。';
             $rental_user = User::find(Auth::id())->name;

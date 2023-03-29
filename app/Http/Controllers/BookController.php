@@ -18,7 +18,7 @@ class BookController extends Controller
         $session_data = [];
         $session_data = $request->session()->get('session_data');
         $in_cart_books = [];
-        if (!empty($session_data)) {
+        if ($session_data) {
             foreach ($session_data as $key => $book_id) {
                 array_push($in_cart_books,$book_id['book_id']);
             }

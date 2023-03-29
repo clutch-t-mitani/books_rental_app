@@ -18,6 +18,13 @@ class Book extends Model
         'author',
     ];
 
+    //Categoryとリレーション
+    public function categories()
+    {
+        return $this->belongsToMany('App\Models\Category')
+        ->withTimestamps();
+    }
+
     //中間テーブルとつなぐ
     public function rental_statuses()
     {

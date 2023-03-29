@@ -55,12 +55,7 @@ class AdminBookController extends Controller
 
 
            if (isset($request->categories_id)) {
-                foreach ($request->categories_id as $category_id) {
-                    $book_category = new BookCategory();
-                    $book_category->book_id = $book->id;
-                    $book_category->category_id = $category_id;
-                    $book_category->save();
-                }
+                $book->categories()->sync($request->categories_id);
             }
 
             DB::commit();
@@ -82,15 +77,11 @@ class AdminBookController extends Controller
             $book->author = $request->author;
             $book->save();
 
-           BookCategory::where('book_id',$request->id)->delete();
 
            if (isset($request->categories_id)) {
-                foreach ($request->categories_id as $category_id) {
-                    $book_category = new BookCategory();
-                    $book_category->book_id = $request->id;
-                    $book_category->category_id = $category_id;
-                    $book_category->save();
-                }
+                $book->categories()->sync($request->categories_id);
+            } else {
+                BookCategory::where('book_id',$request->id)->delete();
             }
 
             DB::commit();

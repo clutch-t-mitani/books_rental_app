@@ -15,6 +15,13 @@ class Category extends Model
         'name',
     ];
 
+    //Bookとリレーション
+    public function books()
+    {
+        return $this->belongsToMany('App\Models\Book')
+        ->withTimestamps();
+    }
+
     //中間テーブルとつなぐ
     public function book_categories()
     {
