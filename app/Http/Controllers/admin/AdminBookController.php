@@ -77,7 +77,6 @@ class AdminBookController extends Controller
             $book->author = $request->author;
             $book->save();
 
-
            if (isset($request->categories_id)) {
                 $book->categories()->sync($request->categories_id);
             } else {
@@ -98,10 +97,11 @@ class AdminBookController extends Controller
     {
         try {
             DB::beginTransaction();
-            $book = Book::where('id',$request->id);
+            $book = Book::findOrFail($request->id);
+
             if ($book->is_rentable) {
-                Book::where('id',$request->id)->delete();
-                BookCategory::where('book_id',$request->id)->delete();
+                $book->delete();
+                BookCategory::where('book_id',$book->id)->delete();
             } else {
                 throw new \Exception();
             }

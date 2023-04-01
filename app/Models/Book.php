@@ -25,13 +25,13 @@ class Book extends Model
         ->withTimestamps();
     }
 
-    //中間テーブルとつなぐ
+    //中間テーブルとリレーション
     public function rental_statuses()
     {
         return $this->hasMany('App\Models\RentalStatus');
     }
 
-    //中間テーブルとつなぐ
+    //中間テーブルとリレーション
     public function book_categories()
     {
         return $this->hasMany('App\Models\BookCategory');

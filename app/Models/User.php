@@ -43,8 +43,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
-    //中間テーブルとつなぐ
+    //中間テーブルとリレーション
     public function rental_statuses()
     {
         return $this->hasMany('App\Models\RentalStatus');

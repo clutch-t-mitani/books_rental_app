@@ -32,7 +32,7 @@ class CategoryRequest extends FormRequest
     public function messages()
     {
         return [
-            'category_id.numeric' => '正しく操作されませんでした。再度操作しくださいa。',
+            'category_id.numeric' => '正しく操作されませんでした。再度操作しください。',
             'name.required' => 'カテゴリー名は必須項目です。',
         ];
     }

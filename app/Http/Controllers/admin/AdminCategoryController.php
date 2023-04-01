@@ -32,18 +32,20 @@ class AdminCategoryController extends Controller
                 $category = Category::findOrFail($request->category_id);
                 $category->name = $request->name;
                 $category->save();
+                $msg_success = 'カテゴリ名を変更しました。';
             } elseif ($request->category_action == 'delete') {
                 Category::where('id',$request->category_id)->delete();
                 BookCategory::where('category_id',$request->category_id)->delete();
+                $msg_success = 'カテゴリを削除しました。';
             } else {
                 throw new \Exception();
             }
             DB::commit();
-            session()->flash('msg_success', '削除しました');
+            session()->flash('msg_success', $msg_success);
             return redirect('/admin/books');
         } catch (\Throwable $e) {
             DB::rollBack();
-            session()->flash('msg_danger', '削除に失敗しました。');
+            session()->flash('msg_danger', '正しく変更されませんでした。');
             return redirect('/admin/books');
         }
     }

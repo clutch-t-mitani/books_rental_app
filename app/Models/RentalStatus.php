@@ -22,7 +22,6 @@ class RentalStatus extends Model
         'return_datetime',
     ];
 
-    //例 book_id5はbooksテーブルに1つだから belongsTo でかつ関数名は単数系
     public function book()
     {
         return $this->belongsTo('App\Models\Book');
