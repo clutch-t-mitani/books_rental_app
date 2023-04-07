@@ -9,7 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\admin\AdminRentalBookController;
 use App\Http\Controllers\admin\AdminBookController;
 use App\Http\Controllers\admin\AdminCategoryController;
-
+use App\Http\Controllers\admin\AdminRankingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +46,7 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::post('/categories', [AdminCategoryController::class, 'update'])->name('category.update');
     Route::post('/books/create', [AdminBookController::class, 'create'])->name('book.create');
     Route::post('/books/delete', [AdminBookController::class, 'delete'])->name('book.delete');
+    Route::get('/ranking', [AdminRankingController::class, 'index'])->name('ranking');
 });
 
 Route::prefix('admin')->group(function() {
