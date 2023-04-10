@@ -9,7 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\admin\AdminRentalBookController;
 use App\Http\Controllers\admin\AdminBookController;
 use App\Http\Controllers\admin\AdminCategoryController;
-use App\Http\Controllers\admin\AdminRankingController;
+use App\Http\Controllers\RankingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function() {
     Route::post('/add', [CartController::class, 'add'])->name('cart.add');
     Route::post('/cart_delete', [CartController::class, 'delete'])->name('cart.delete');
     Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+    Route::get('/ranking', [RankingController::class, 'index'])->name('ranking');
 });
 
 Auth::routes();
@@ -46,7 +47,6 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::post('/categories', [AdminCategoryController::class, 'update'])->name('category.update');
     Route::post('/books/create', [AdminBookController::class, 'create'])->name('book.create');
     Route::post('/books/delete', [AdminBookController::class, 'delete'])->name('book.delete');
-    Route::get('/ranking', [AdminRankingController::class, 'index'])->name('ranking');
 });
 
 Route::prefix('admin')->group(function() {

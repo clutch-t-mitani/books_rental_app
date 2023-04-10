@@ -1,4 +1,4 @@
-@extends('layouts.app_admin')
+@extends('layouts.app_book')
 
 @section('content')
 <div class="container">
@@ -26,34 +26,40 @@
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach ($rental_count_list as $rental_count_book)
+                            @php
+                                $rank = 1;
+                                $cnt = 1;
+                                $bef_point = 0;
+                            @endphp
+                        @foreach ($sorted_rental_books as $rental_book)
+                            @php
+                                if (!$rental_book->rental_count) {
+                                    break;
+                                }
+                                if($bef_point != $rental_book->rental_count){
+                                    $rank = $cnt;
+                                }
+                            @endphp
                             <tr>
-                                <td></td>
-                                <td></td>
-                                {{-- <td>
-                                    @foreach ($rental_count_book->book->book_categories as $book_category)
+                                <td>{{ $rank }}位</td>
+                                <td>
+                                    @foreach ($rental_book->book_categories as $book_category)
                                         【{{ $book_category->category->name }}】<br>
                                     @endforeach
-                                </td> --}}
-                                {{-- <td>{{ $rentaled_book_status->book->name }}</td>
-                                <td>{{ $rentaled_book_status->book->author }}</td>
-                                <td>
-                                    {{ $rentaled_book_status->rental_start_datetime->isoFormat('YYYY/MM/DD(ddd)') }}<br>
-                                    {{ $rentaled_book_status->rental_start_datetime->addDays(7)->isoFormat('YYYY/MM/DD(ddd)') }}
                                 </td>
-                                <td>
-                                    @if (is_null($rentaled_book_status->return_datetime))
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#returnButtton{{ $rentaled_book_status->id }}">返却</button>
-                                    @else
-                                        返却済
-                                    @endif
-                                </td> --}}
+                                <td>{{ $rental_book->name }}</td>
+                                <td>{{ $rental_book->author }}</td>
+                                <td>{{ $rental_book->rental_count }}回</td>
+                                @php
+                                    $bef_point = $rental_book->rental_count;
+                                    $cnt++;
+                                @endphp
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
                     <div class="mt-4">
-                        {{-- {{ $rental_count_list->links() }} --}}
+                        {{-- {{ $books->links() }} --}}
                     </div>
                 </div>
             </div>
