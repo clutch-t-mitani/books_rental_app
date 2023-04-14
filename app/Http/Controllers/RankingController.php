@@ -7,6 +7,8 @@ use App\Models\RentalStatus;
 use App\Models\Category;
 use App\Models\Book;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class RankingController extends Controller
 {
@@ -33,7 +35,8 @@ class RankingController extends Controller
             }
         }
 
-        $sorted_rental_books = $books->sortByDesc('rental_count')->values();
+        $sorted_rental_books = $books->sortByDesc('rental_count');
+
         return view('ranking',compact('categories','sorted_rental_books'));
     }
 

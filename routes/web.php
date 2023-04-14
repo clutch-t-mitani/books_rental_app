@@ -24,6 +24,7 @@ use App\Http\Controllers\RankingController;
 
 
 Route::get('/', [bookController::class, 'index'])->name('books.index');
+Route::get('/ranking', [RankingController::class, 'index'])->name('ranking');
 
 Route::middleware('auth')->group(function() {
     Route::post('/', [bookController::class, 'store'])->name('books.store');
@@ -32,7 +33,6 @@ Route::middleware('auth')->group(function() {
     Route::post('/add', [CartController::class, 'add'])->name('cart.add');
     Route::post('/cart_delete', [CartController::class, 'delete'])->name('cart.delete');
     Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
-    Route::get('/ranking', [RankingController::class, 'index'])->name('ranking');
 });
 
 Auth::routes();

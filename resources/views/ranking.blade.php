@@ -6,12 +6,10 @@
         <div class="col-md-17">
             <div class="card">
                 <div class="card-header" style="background-color:red; color: white; display: flex; justify-content: space-between;">
-                    <div style="display: inline-block;">レンタル済み商品一覧</div>
-                    @if( Auth::check() )
-                        <div style="display: inline-block; ">
-                            <a href="{{ route('admin.book') }}" class="link"><i class="fa fa-book"></i>在庫編集ページへ</a><br>
-                        </div>
-                    @endif
+                    <div style="display: inline-block;">レンタルランキング</div>
+                    <div style="display: inline-block; ">
+                        <a href="{{ route('books.index') }}" class="page_link"><i class="fa fa-book"></i>レンタルページへ</a><br>
+                    </div>
                 </div>
                 <div class="card-body">
                     <!--検索フォーム-->
@@ -38,6 +36,9 @@
                                 }
                                 if($bef_point != $rental_book->rental_count){
                                     $rank = $cnt;
+                                }
+                                if($rank == 11){
+                                    break;
                                 }
                             @endphp
                             <tr>
@@ -67,4 +68,15 @@
     </div>
 </div>
 @endsection
+
+<style>
+    .page_link{
+        color: white;
+
+    }
+    .page_link:hover{
+        text-decoration: underline;
+        color: white;
+    }
+</style>
 
