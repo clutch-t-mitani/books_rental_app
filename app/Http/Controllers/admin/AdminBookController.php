@@ -102,6 +102,7 @@ class AdminBookController extends Controller
             if ($book->is_rentable) {
                 $book->delete();
                 BookCategory::where('book_id',$book->id)->delete();
+                RentalStatus::where('book_id',$book->id)->delete();
             } else {
                 throw new \Exception();
             }
