@@ -47,6 +47,7 @@ class BookController extends Controller
         }
 
         $books = $query->paginate(10);
+        $ranking_books = Book::ranking(Book::get());
 
         return view('books.index',[
             'pagenate_params' => [
@@ -54,7 +55,7 @@ class BookController extends Controller
                 'category_id' => $category_id,
                 'rental_status' => $rental_status,
             ],
-        ],compact('books','categories','search_word','rental_status','category_id','in_cart_books'));
+        ],compact('books','categories','search_word','rental_status','category_id','in_cart_books','ranking_books'));
     }
 
     public static function escapeLike($str)

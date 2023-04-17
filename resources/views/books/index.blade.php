@@ -36,32 +36,34 @@
 
                                 <div class="form-group row">
                                     <label class="col-1" style="font-size: 0.95em;">商品<br>カテゴリ</label>
-                                        <div class="col-3">
-                                            <select name="category_id" class="form-control">
-                                                <option value="0">未選択</option>
-                                                @foreach($categories as $category)
-                                                    <option value="{{ $category->id }}" @if($category->id == $category_id) selected @endif>
-                                                        {{ $category->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <label class="col-1" style="font-size: 0.95em;">レンタル状況</label>
-                                        <div class="col-3">
-                                            <select name="rental_status" class="form-control" value="" >
-                                                <option value="1">全て</option>
-                                                <option value="2" @if($rental_status==2) selected @endif>レンタル可商品のみ</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-auto">
-                                            <button type="submit" class="btn btn-primary" id="search_button">絞り込み</button>
-                                            <a href="/">クリア</a>
-                                        </div>
+                                    <div class="col-3">
+                                        <select name="category_id" class="form-control">
+                                            <option value="0">未選択</option>
+                                            @foreach($categories as $category)
+                                                <option value="{{ $category->id }}" @if($category->id == $category_id) selected @endif>
+                                                    {{ $category->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <label class="col-1" style="font-size: 0.95em;">レンタル状況</label>
+                                    <div class="col-3">
+                                        <select name="rental_status" class="form-control" value="" >
+                                            <option value="1">全て</option>
+                                            <option value="2" @if($rental_status==2) selected @endif>レンタル可商品のみ</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary" id="search_button">絞り込み</button>
+                                        <a href="/">クリア</a>
+                                    </div>
                                 </div>
                             </form>
                         </div>
                     </div>
-
+                    <button type="button" class="btn btn-outline-info btn-sm" style="margin-bottom: 5px" data-toggle="modal" data-target="#ranking">ランキングはこちら</button>
+                    {{-- ランキングのモーダル --}}
+                    @include('modal.ranking')
                     <table id="table1" class="table table-bordered">
                         <thead>
                         <tr>
