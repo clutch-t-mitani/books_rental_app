@@ -9,7 +9,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\admin\AdminRentalBookController;
 use App\Http\Controllers\admin\AdminBookController;
 use App\Http\Controllers\admin\AdminCategoryController;
-use App\Http\Controllers\RankingController;
 
 /*
 |--------------------------------------------------------------------------
