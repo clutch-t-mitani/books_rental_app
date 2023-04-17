@@ -24,7 +24,6 @@ use App\Http\Controllers\RankingController;
 
 
 Route::get('/', [bookController::class, 'index'])->name('books.index');
-Route::get('/ranking', [RankingController::class, 'index'])->name('ranking');
 
 Route::middleware('auth')->group(function() {
     Route::post('/', [bookController::class, 'store'])->name('books.store');

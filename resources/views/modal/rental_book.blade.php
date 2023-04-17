@@ -13,8 +13,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
                     <button type="submit" class="btn btn-primary">カートに入れる</button>
+                </div>
             </form>
-            </div>
         </div>
     </div>
 </div>
