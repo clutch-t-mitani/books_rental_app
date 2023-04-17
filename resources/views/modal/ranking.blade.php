@@ -3,7 +3,7 @@
     <div class="modal-dialog" style="max-width: inherit; width: 60%; ">
         <div class="modal-content">
             <div class="card-body">
-                <table class="table table-striped" style="font-size: 80%">
+                <table class="table table-striped  table-bordered" style="font-size: 80%">
                     <thead>
                         <tr>
                             <th style="width: 10%">順位</th>
